@@ -1,16 +1,15 @@
 import { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { signup } from '../api/auth';
+import { login } from '../api/auth';
 
-const SignupPage = () => {
-  const [name, setName] = useState('');
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { login } = useContext(AuthContext);
+  const { login: LoginContext } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,19 +18,14 @@ const SignupPage = () => {
     setIsLoading(true);
 
     try {
-      // APIを呼び出してユーザー登録
-      const response = await signup({ name, email, password });
-
-      // 認証情報をコンテキストに保存
-      login(response.user, response.token);
-
-      // ホーム画面に遷移
+      const response = await login(email, password);
+      LoginContext(response.user, response.token)
       navigate('/');
     } catch (err: any) {
-      console.error('サインアップエラー:', err);
+      console.error('ログインエラー: ', err);
       setError(
-        err.response?.data?.errors?.join(', ') ||
-        'サインアップできませんでした。もう一度お試しください。'
+        err.response?.data?.error ||
+        'ログインできませんでした。メールアドレスとパスワードを確認してください。'
       );
     } finally {
       setIsLoading(false);
@@ -39,23 +33,12 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="signup-container">
-      <h1>アカウント作成</h1>
+    <div className="login-container">
+      <h1>ログイン</h1>
 
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">名前</label>
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-
         <div className="form-group">
           <label htmlFor="email">メールアドレス</label>
           <input
@@ -75,24 +58,23 @@ const SignupPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            minLength={6}
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="signup-button"
+          className="login-button"
         >
-          {isLoading ? '処理中...' : 'アカウント作成'}
+          {isLoading ? '処理中...' : 'ログイン'}
         </button>
       </form>
 
-      <div className="login-link">
-        <p>すでにアカウントをお持ちですか？ <Link to="/login">ログイン</Link></p>
+      <div className="signup-link">
+        <p>アカウントをお持ちでないですか？ <a href="/signup">会員登録</a></p>
       </div>
     </div>
   );
 };
 
-export default SignupPage;
+export default LoginPage;
