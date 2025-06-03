@@ -26,7 +26,7 @@ const SignupPage = () => {
       login(response.user, response.token);
 
       // ホーム画面に遷移
-      navigate('/');
+      navigate('/home');
     } catch (err: any) {
       console.error('サインアップエラー:', err);
       setError(
