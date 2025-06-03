@@ -64,7 +64,7 @@ const CreatePostForm = ({
 
         <div className="create-post-actions">
           <div className="character-count">
-            {content.length > 0 && `${content.length}/200`}
+            {content.length > 0 && `${content.length}/280`}
           </div>
 
           <button

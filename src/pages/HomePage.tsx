@@ -84,7 +84,7 @@ const HomePage = () => {
                   )}
                 </div>
                 <div className="post-time">
-                  {formatDistance(new Date(post.created_at), new Date(), { 
+                  {formatDistance(new Date(post.created_at), new Date(), {
                     addSuffix: true,
                     locale: ja
                   })}
@@ -99,7 +99,7 @@ const HomePage = () => {
         )}
       </div>
 
-      <CreatePostButton />
+      <CreatePostButton onPostCreated={handlePostCreated} />
     </div>
   );
 };

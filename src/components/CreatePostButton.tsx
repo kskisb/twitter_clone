@@ -1,11 +1,20 @@
 import { useState } from 'react';
 import CreatePostModal from './CreatePostModal';
 
-const CreatePostButton = () => {
+interface CreatePostButtonProps {
+  onPostCreated: () => void;
+}
+
+const CreatePostButton = ({ onPostCreated }: CreatePostButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const handlePostCreated = () => {
+    onPostCreated();
+    closeModal();
+  };
 
   return (
     <>
@@ -18,7 +27,10 @@ const CreatePostButton = () => {
       </button>
 
       {isModalOpen && (
-        <CreatePostModal onClose={closeModal} />
+        <CreatePostModal
+          onClose={closeModal}
+          onPostCreated={handlePostCreated}
+        />
       )}
     </>
   );

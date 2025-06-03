@@ -3,9 +3,10 @@ import CreatePostForm from './CreatePostForm';
 
 interface CreatePostModalProps {
   onClose: () => void;
+  onPostCreated: () => void;
 }
 
-const CreatePostModal = ({ onClose }: CreatePostModalProps) => {
+const CreatePostModal = ({ onClose, onPostCreated }: CreatePostModalProps) => {
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
@@ -16,6 +17,7 @@ const CreatePostModal = ({ onClose }: CreatePostModalProps) => {
   }, [onClose]);
 
   const handlePostCreated = () => {
+    onPostCreated();
     onClose();
   };
 
