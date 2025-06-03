@@ -26,7 +26,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link to="/login" className="login-link">ログイン</Link>
+            <Link to="/login" className="nav-link">ログイン</Link>
             <Link to="/signup" className="nav-link signup">新規登録</Link>
           </>
         )}
