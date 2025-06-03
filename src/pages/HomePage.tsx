@@ -4,6 +4,8 @@ import { getAllPosts } from '../api/posts';
 import type { Post } from '../types/post';
 import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
+import CreatePostForm from '../components/CreatePostForm';
+import CreatePostButton from '../components/CreatePostButton';
 
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -11,35 +13,39 @@ const HomePage = () => {
   const [error, setError] = useState('');
   const { isAuthenticated } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setIsLoading(true);
-      try {
-        const postsData = await getAllPosts();
-        setPosts(postsData);
-      } catch (err) {
-        console.error('投稿の取得に失敗しました: ', err);
-        setError('投稿の取得に失敗しました。後でもう一度お試しください。');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchPosts = async () => {
+    setIsLoading(true);
+    try {
+      const postsData = await getAllPosts();
+      setPosts(postsData);
+    } catch (err) {
+      console.error('投稿の取得に失敗しました:', err);
+      setError('投稿の取得に失敗しました。後でもう一度お試しください。');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     if (isAuthenticated) {
       fetchPosts();
     }
   }, [isAuthenticated]);
 
+  const handlePostCreated = () => {
+    fetchPosts();
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="home-container not-authenticated">
         <h2>ログインが必要です</h2>
-        <p>投稿を見るにはログインしてください</p>
+        <p>投稿を見るにはログインしてください。</p>
       </div>
     );
   }
 
-  if (isLoading) {
+  if (isLoading && posts.length === 0) {
     return (
       <div className="home-container loading">
         <p>読み込み中...</p>
@@ -47,7 +53,7 @@ const HomePage = () => {
     );
   }
 
-  if (error) {
+  if (error && posts.length === 0) {
     return (
       <div className="home-container error">
         <p className="error-message">{error}</p>
@@ -58,6 +64,10 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <h1 className="page-title">ホーム</h1>
+
+      <div className="home-post-form-container">
+        <CreatePostForm onPostCreated={handlePostCreated} />
+      </div>
 
       <div className="posts-container">
         {posts.length === 0 ? (
@@ -74,7 +84,7 @@ const HomePage = () => {
                   )}
                 </div>
                 <div className="post-time">
-                  {formatDistance(new Date(post.created_at), new Date(), {
+                  {formatDistance(new Date(post.created_at), new Date(), { 
                     addSuffix: true,
                     locale: ja
                   })}
@@ -82,12 +92,14 @@ const HomePage = () => {
               </div>
               <div className="post-content">{post.content}</div>
               <div className="post-actions">
-                {/* いいねボタンなど */}
+                {/* いいねボタンなどは後で実装 */}
               </div>
             </div>
           ))
         )}
       </div>
+
+      <CreatePostButton />
     </div>
   );
 };

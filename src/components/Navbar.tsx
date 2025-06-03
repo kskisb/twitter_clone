@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/" className="brand-logo">Twitter Clone</Link>
+        <Link to="/" className="brand-logo">Twitterです</Link>
       </div>
       <div className="navbar-menu">
         {isAuthenticated ? (
