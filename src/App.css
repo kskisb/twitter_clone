@@ -1,0 +1,182 @@
+/* 全体のリセット */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f7f9fa;
+  color: #14171a;
+  line-height: 1.3;
+}
+
+/* サインアップ・ログインページのスタイル */
+.signup-container, .login-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 24px;
+  color: #1da1f2;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd6dd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #1da1f2;
+  box-shadow: 0 0 0 2px rgba(29, 161, 242, 0.2);
+}
+
+.signup-button,
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1da1f2;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.signup-button:hover,
+.login-button:hover {
+  background-color: #1a91da;
+}
+
+.signup-button:disabled,
+.login-button:disabled {
+  background-color: #9bd1f9;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #e0245e;
+  background-color: #ffeef0;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.login-link, .signup-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.login-link a, .signup-link a {
+  color: #1da1f2;
+  text-decoration: none;
+}
+
+.login-link a:hover, .signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* ナビゲーションバー */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e6ecf0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  height: 50px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo {
+  color: #1da1f2;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-link {
+  color: #536471;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-link.signup {
+  background-color: #1da1f2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.welcome-message {
+  color: #536471;
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.logout-button {
+  background-color: transparent;
+  color: #1da1f2;
+  border: 1px solid #1da1f2;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+/* コンテナのスタイル */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
