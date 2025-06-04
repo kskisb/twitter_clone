@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
+import PostDetailPage from './pages/PostDetailPage';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
@@ -21,6 +22,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/post/:postId"
+              element={
+                <ProtectedRoute>
+                  <PostDetailPage />
                 </ProtectedRoute>
               }
             />

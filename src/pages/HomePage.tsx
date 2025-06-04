@@ -2,10 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { getAllPosts } from '../api/posts';
 import type { Post } from '../types/post';
-import { formatDistance } from 'date-fns';
-import { ja } from 'date-fns/locale';
 import CreatePostForm from '../components/CreatePostForm';
 import CreatePostButton from '../components/CreatePostButton';
+import PostCard from '../components/PostCard';
 
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -34,6 +33,14 @@ const HomePage = () => {
 
   const handlePostCreated = () => {
     fetchPosts();
+  };
+
+  const handlePostUpdated = (updatedPost: Post) => {
+    setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p))
+  }
+
+  const handlePostDeleted = (postId: number) => {
+    setPosts(posts.filter(p => p.id !== postId));
   };
 
   if (!isAuthenticated) {
@@ -74,27 +81,12 @@ const HomePage = () => {
           <p className="no-posts">投稿がありません。</p>
         ) : (
           posts.map(post => (
-            <div key={post.id} className="post-card">
-              <div className="post-header">
-                <div className="post-user">
-                  {post.user ? (
-                    <span className="user-name">{post.user.name}</span>
-                  ) : (
-                    <span className="user-name">不明なユーザー</span>
-                  )}
-                </div>
-                <div className="post-time">
-                  {formatDistance(new Date(post.created_at), new Date(), {
-                    addSuffix: true,
-                    locale: ja
-                  })}
-                </div>
-              </div>
-              <div className="post-content">{post.content}</div>
-              <div className="post-actions">
-                {/* いいねボタンなどは後で実装 */}
-              </div>
-            </div>
+            <PostCard
+              key={post.id}
+              post={post}
+              onPostUpdated={handlePostUpdated}
+              onPostDeleted={handlePostDeleted}
+            />
           ))
         )}
       </div>

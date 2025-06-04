@@ -21,6 +21,13 @@ export const createPost = async (content: string): Promise<Post> => {
   return response.data;
 }
 
+export const updatePost = async (postId: number, content: string): Promise<Post> => {
+  const response = await client.put<Post>(`/posts/${postId}`, {
+    post: { content }
+  });
+  return response.data;
+}
+
 export const deletePost = async (postId: number): Promise<void> => {
   await client.delete(`/posts/${postId}`);
 }
