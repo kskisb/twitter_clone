@@ -20,7 +20,7 @@ const LoginPage = () => {
     try {
       const response = await login(email, password);
       LoginContext(response.user, response.token)
-      navigate('/');
+      navigate('/home');
     } catch (err: any) {
       console.error('ログインエラー: ', err);
       setError(
