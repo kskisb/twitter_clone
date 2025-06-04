@@ -88,6 +88,7 @@ const PostDetailPage = () => {
               post={post}
               onEditSuccess={handleEditSuccess}
               onDeleteSuccess={handleDeleteSuccess}
+              isDetail={true}
             />
           )}
         </div>

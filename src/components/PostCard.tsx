@@ -50,6 +50,7 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, isDetail = false }: Post
             post={post}
             onEditSuccess={handleEditSuccess}
             onDeleteSuccess={handleDeleteSuccess}
+            isDetail={isDetail}
           />
         )}
       </div>
