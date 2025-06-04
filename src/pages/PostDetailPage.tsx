@@ -1,0 +1,111 @@
+import { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { formatDistance } from 'date-fns';
+import { ja } from 'date-fns/locale';
+import { AuthContext } from '../context/AuthContext';
+import { getPost } from '../api/posts';
+import PostActions from '../components/PostActions';
+import type { Post } from '../types/post';
+
+const PostDetailPage = () => {
+  const { postId } = useParams<{ postId: string }>();
+  const [post, setPost] = useState<Post | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const fetchPost = async () => {
+    if (!postId) return;
+
+    setIsLoading(true);
+    try {
+      const postData = await getPost(parseInt(postId));
+      setPost(postData);
+    } catch (err) {
+      console.error('投稿の取得に失敗しました: ', err);
+      setError('投稿の取得に失敗しました。後でもう一度お試しください。');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPost();
+  }, [postId]);
+
+  const handleEditSuccess = (updatePost: Post) => {
+    setPost(updatePost);
+  }
+
+  const handleDeleteSuccess = () => {
+    navigate('/home');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="post-detail-loading">
+        <p>読み込み中...</p>
+      </div>
+    )
+  }
+
+  if (error || !post) {
+    return (
+      <div className="post-detail-error">
+        <p className="error-message">{error || '投稿が見つかりません。'}</p>
+      </div>
+    );
+  }
+
+  const isOwner = user?.id === post.user_id;
+
+  return (
+    <div className="post-detail-container">
+      <div className="post-detail-header">
+        <button
+          className="back-button"
+          onClick={() => navigate(-1)}
+        >
+          ← 戻る
+        </button>
+        <h1 className="page-title">投稿</h1>
+      </div>
+
+      <div className="post-detail-card">
+        <div className="post-header">
+          <div className="post-user-info">
+            <div className="avatar">
+              {post.user?.name.charAt(0) || '?'}
+            </div>
+            <div className="user-details">
+              <span className="user-name">{post.user?.name || '不明なユーザー'}</span>
+            </div>
+          </div>
+
+          {isOwner && (
+            <PostActions
+              post={post}
+              onEditSuccess={handleEditSuccess}
+              onDeleteSuccess={handleDeleteSuccess}
+              isDetail={true}
+            />
+          )}
+        </div>
+
+        <div className="post-detail-content">
+          {post.content}
+        </div>
+
+        <div className="post-detail-time">
+          {formatDistance(new Date(post.created_at), new Date(), {
+            addSuffix: true,
+            locale: ja
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PostDetailPage;
