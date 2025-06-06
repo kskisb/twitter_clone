@@ -4,6 +4,7 @@ import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
 import { getPost } from '../api/posts';
+import { likePost, unlikePost } from '../api/likes';
 import PostActions from '../components/PostActions';
 import LikeButton from '../components/LikeButton';
 import type { Post } from '../types/post';
@@ -54,18 +55,24 @@ const PostDetailPage = () => {
   };
 
   const handleLike = async () => {
-    // いいね処理の実装は次のステップで
-    console.log('いいねボタンがクリックされました');
-    if (post) {
+    if (!post) return;
+
+    try {
+      await likePost(post.id);
       handleLikeToggled(post.id, true);
+    } catch (error) {
+      console.error('いいねエラー:', error);
     }
   };
 
   const handleUnlike = async () => {
-    // いいね解除処理の実装は次のステップで
-    console.log('いいね解除ボタンがクリックされました');
-    if (post) {
+    if (!post) return;
+
+    try {
+      await unlikePost(post.id);
       handleLikeToggled(post.id, false);
+    } catch (error) {
+      console.error('いいね解除エラー:', error);
     }
   };
 
@@ -125,7 +132,7 @@ const PostDetailPage = () => {
         </div>
 
         <div className="post-actions-bar">
-          <LikeButton 
+          <LikeButton
             likesCount={post.likes_count || 0}
             isLiked={post.liked_by_current_user || false}
             onLike={handleLike}

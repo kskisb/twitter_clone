@@ -5,6 +5,7 @@ import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
 import PostActions from './PostActions';
 import LikeButton from './LikeButton';
+import { likePost, unlikePost } from '../api/likes';
 import type { Post } from '../types/post';
 
 interface PostCardProps {
@@ -36,18 +37,24 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail 
   };
 
   const handleLike = async () => {
-    // いいね処理の実装は次のステップで
-    console.log('いいねボタンがクリックされました');
-    if (onLikeToggled) {
-      onLikeToggled(post.id, true);
+    try {
+      await likePost(post.id);
+      if (onLikeToggled) {
+        onLikeToggled(post.id, true);
+      }
+    } catch (error) {
+      console.error('いいねエラー:', error);
     }
   };
 
   const handleUnlike = async () => {
-    // いいね解除処理の実装は次のステップで
-    console.log('いいね解除ボタンがクリックされました');
-    if (onLikeToggled) {
-      onLikeToggled(post.id, false);
+    try {
+      await unlikePost(post.id);
+      if (onLikeToggled) {
+        onLikeToggled(post.id, false);
+      }
+    } catch (error) {
+      console.error('いいね解除エラー:', error);
     }
   };
 
