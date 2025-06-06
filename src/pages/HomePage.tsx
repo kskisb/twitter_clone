@@ -43,6 +43,20 @@ const HomePage = () => {
     setPosts(posts.filter(p => p.id !== postId));
   };
 
+  const handleLikeToggled = (postId: number, liked: boolean) => {
+    // いいねの状態を更新する処理
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
+          liked_by_current_user: liked
+        };
+      }
+      return post;
+    }));
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="home-container not-authenticated">
@@ -86,6 +100,7 @@ const HomePage = () => {
               post={post}
               onPostUpdated={handlePostUpdated}
               onPostDeleted={handlePostDeleted}
+              onLikeToggled={handleLikeToggled}
             />
           ))
         )}

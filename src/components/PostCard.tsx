@@ -4,16 +4,18 @@ import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
 import PostActions from './PostActions';
+import LikeButton from './LikeButton';
 import type { Post } from '../types/post';
 
 interface PostCardProps {
   post: Post;
   onPostUpdated?: (post: Post) => void;
   onPostDeleted?: (postId: number) => void;
+  onLikeToggled?: (postId: number, liked: boolean) => void;
   isDetail?: boolean;
 }
 
-const PostCard = ({ post, onPostUpdated, onPostDeleted, isDetail = false }: PostCardProps) => {
+const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail = false }: PostCardProps) => {
   const { user } = useContext(AuthContext);
   const isOwner = user?.id === post.user_id;
 
@@ -31,6 +33,22 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, isDetail = false }: Post
 
   const handleHeaderClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+  };
+
+  const handleLike = async () => {
+    // いいね処理の実装は次のステップで
+    console.log('いいねボタンがクリックされました');
+    if (onLikeToggled) {
+      onLikeToggled(post.id, true);
+    }
+  };
+
+  const handleUnlike = async () => {
+    // いいね解除処理の実装は次のステップで
+    console.log('いいね解除ボタンがクリックされました');
+    if (onLikeToggled) {
+      onLikeToggled(post.id, false);
+    }
   };
 
   const cardContent = (
@@ -65,7 +83,12 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, isDetail = false }: Post
       </div>
 
       <div className="post-actions-bar">
-        {/* いいねボタン等 */}
+        <LikeButton
+          likesCount={post.likes_count || 0}
+          isLiked={post.liked_by_current_user || false}
+          onLike={handleLike}
+          onUnlike={handleUnlike}
+        />
       </div>
     </>
   );

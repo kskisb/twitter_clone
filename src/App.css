@@ -627,3 +627,46 @@ input:focus {
   margin-bottom: 16px;
   font-size: 20px;
 }
+
+/* いいねボタンスタイル */
+.post-actions-bar {
+  display: flex;
+  margin-top: 10px;
+}
+
+.like-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #657786;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.like-button:hover {
+  color: #E0245E;
+  background-color: rgba(224, 36, 94, 0.1);
+}
+
+.like-button.liked {
+  color: #E0245E;
+}
+
+.like-button.loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.like-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.like-count {
+  font-size: 13px;
+  font-weight: 500;
+}
