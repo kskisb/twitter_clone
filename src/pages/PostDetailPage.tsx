@@ -76,6 +76,12 @@ const PostDetailPage = () => {
     }
   };
 
+  const handleUserClick = () => {
+    if (post?.user?.id) {
+      navigate(`/user/${post.user.id}`);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="post-detail-loading">
@@ -108,7 +114,7 @@ const PostDetailPage = () => {
 
       <div className="post-detail-card">
         <div className="post-header">
-          <div className="post-user-info">
+          <div className="post-user-info" onClick={handleUserClick}>
             <div className="avatar">
               {post.user?.name.charAt(0) || '?'}
             </div>

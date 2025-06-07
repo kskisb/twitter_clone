@@ -216,11 +216,6 @@ input:focus {
   margin-bottom: 10px;
 }
 
-.user-name {
-  font-weight: 600;
-  color: #14171a;
-}
-
 .post-time {
   color: #657786;
   font-size: 14px;
@@ -669,4 +664,102 @@ input:focus {
 .like-count {
   font-size: 13px;
   font-weight: 500;
+}
+
+/* ユーザーページのスタイル */
+.user-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.user-page-header {
+  margin-bottom: 20px;
+}
+
+.back-button {
+  background-color: transparent;
+  border: none;
+  color: #1da1f2;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 20px;
+}
+
+.back-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #1da1f2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.user-email {
+  color: #657786;
+  margin: 0;
+}
+
+.section-title {
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+/* ナビゲーションバーのユーザー名 */
+.current-user-name {
+  color: #1da1f2;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.current-user-name:hover {
+  text-decoration: underline;
+}
+
+/* 投稿のユーザー情報 */
+.post-user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.post-user-info:hover .user-name {
+  text-decoration: underline;
+  color: #1da1f2;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #1da1f2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 10px;
 }

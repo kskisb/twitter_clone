@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
@@ -19,6 +19,7 @@ interface PostCardProps {
 const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail = false }: PostCardProps) => {
   const { user } = useContext(AuthContext);
   const isOwner = user?.id === post.user_id;
+  const navigate = useNavigate();
 
   const handleEditSuccess = (updatedPost: Post) => {
     if (onPostUpdated) {
@@ -34,6 +35,14 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail 
 
   const handleHeaderClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+  };
+
+  const handleUserClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (post.user?.id) {
+      navigate(`/user/${post.user.id}`);
+    }
   };
 
   const handleLike = async () => {
@@ -61,7 +70,7 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail 
   const cardContent = (
     <>
       <div className="post-header" onClick={handleHeaderClick}>
-        <div className="post-user-info">
+        <div className="post-user-info" onClick={handleUserClick}>
           <div className="avatar">
             {post.user?.name.charAt(0) || '?'}
           </div>
