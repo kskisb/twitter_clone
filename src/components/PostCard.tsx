@@ -4,16 +4,19 @@ import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
 import PostActions from './PostActions';
+import LikeButton from './LikeButton';
+import { likePost, unlikePost } from '../api/likes';
 import type { Post } from '../types/post';
 
 interface PostCardProps {
   post: Post;
   onPostUpdated?: (post: Post) => void;
   onPostDeleted?: (postId: number) => void;
+  onLikeToggled?: (postId: number, liked: boolean) => void;
   isDetail?: boolean;
 }
 
-const PostCard = ({ post, onPostUpdated, onPostDeleted, isDetail = false }: PostCardProps) => {
+const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail = false }: PostCardProps) => {
   const { user } = useContext(AuthContext);
   const isOwner = user?.id === post.user_id;
 
@@ -31,6 +34,28 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, isDetail = false }: Post
 
   const handleHeaderClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+  };
+
+  const handleLike = async () => {
+    try {
+      await likePost(post.id);
+      if (onLikeToggled) {
+        onLikeToggled(post.id, true);
+      }
+    } catch (error) {
+      console.error('いいねエラー:', error);
+    }
+  };
+
+  const handleUnlike = async () => {
+    try {
+      await unlikePost(post.id);
+      if (onLikeToggled) {
+        onLikeToggled(post.id, false);
+      }
+    } catch (error) {
+      console.error('いいね解除エラー:', error);
+    }
   };
 
   const cardContent = (
@@ -65,7 +90,12 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, isDetail = false }: Post
       </div>
 
       <div className="post-actions-bar">
-        {/* いいねボタン等 */}
+        <LikeButton
+          likesCount={post.likes_count || 0}
+          isLiked={post.liked_by_current_user || false}
+          onLike={handleLike}
+          onUnlike={handleUnlike}
+        />
       </div>
     </>
   );

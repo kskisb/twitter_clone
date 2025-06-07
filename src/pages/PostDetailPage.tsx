@@ -4,7 +4,9 @@ import { formatDistance } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
 import { getPost } from '../api/posts';
+import { likePost, unlikePost } from '../api/likes';
 import PostActions from '../components/PostActions';
+import LikeButton from '../components/LikeButton';
 import type { Post } from '../types/post';
 
 const PostDetailPage = () => {
@@ -40,6 +42,38 @@ const PostDetailPage = () => {
 
   const handleDeleteSuccess = () => {
     navigate('/home');
+  };
+
+  const handleLikeToggled = (_postId: number, liked: boolean) => {
+    if (!post) return;
+
+    setPost({
+      ...post,
+      likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
+      liked_by_current_user: liked
+    });
+  };
+
+  const handleLike = async () => {
+    if (!post) return;
+
+    try {
+      await likePost(post.id);
+      handleLikeToggled(post.id, true);
+    } catch (error) {
+      console.error('いいねエラー:', error);
+    }
+  };
+
+  const handleUnlike = async () => {
+    if (!post) return;
+
+    try {
+      await unlikePost(post.id);
+      handleLikeToggled(post.id, false);
+    } catch (error) {
+      console.error('いいね解除エラー:', error);
+    }
   };
 
   if (isLoading) {
@@ -95,6 +129,15 @@ const PostDetailPage = () => {
 
         <div className="post-detail-content">
           {post.content}
+        </div>
+
+        <div className="post-actions-bar">
+          <LikeButton
+            likesCount={post.likes_count || 0}
+            isLiked={post.liked_by_current_user || false}
+            onLike={handleLike}
+            onUnlike={handleUnlike}
+          />
         </div>
 
         <div className="post-detail-time">
