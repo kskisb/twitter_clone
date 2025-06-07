@@ -18,7 +18,7 @@ interface PostCardProps {
 
 const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail = false }: PostCardProps) => {
   const { user } = useContext(AuthContext);
-  const isOwner = user?.id === post.user_id;
+  const isOwner = user?.id === (post.user?.id || post.user_id);
   const navigate = useNavigate();
 
   const handleEditSuccess = (updatedPost: Post) => {

@@ -98,7 +98,7 @@ const PostDetailPage = () => {
     );
   }
 
-  const isOwner = user?.id === post.user_id;
+  const isOwner = user?.id === (post.user?.id || post.user_id);
 
   return (
     <div className="post-detail-container">
