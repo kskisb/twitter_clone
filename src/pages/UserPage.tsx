@@ -3,27 +3,37 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getUserDetail } from '../api/users';
 import { getUserPosts } from '../api/posts';
+import { getLikedPosts } from '../api/likes';
 import type { User } from '../types/user';
 import type { Post } from '../types/post';
 import PostCard from '../components/PostCard';
+
+// タブの種類を定義
+type TabType = 'posts' | 'likes';
 
 const UserPage = () => {
   const { userId } = useParams<{ userId: string }>();
   const [user, setUser] = useState<User | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [likedPosts, setLikedPosts] = useState<Post[]>([]);
+  const [activeTab, setActiveTab] = useState<TabType>('posts');
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingLikes, setIsLoadingLikes] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(AuthContext);
 
+  // ユーザー情報と投稿を取得
   const fetchUserData = async () => {
     if (!userId) return;
 
     setIsLoading(true);
     try {
+      // ユーザー情報を取得
       const userData = await getUserDetail(parseInt(userId));
       setUser(userData);
 
+      // ユーザーの投稿を取得
       const userPosts = await getUserPosts(parseInt(userId));
       setPosts(userPosts);
     } catch (err) {
@@ -32,33 +42,83 @@ const UserPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
+  // いいねした投稿を取得
+  const fetchLikedPosts = async () => {
+    if (!userId) return;
+
+    setIsLoadingLikes(true);
+    try {
+      const liked = await getLikedPosts(parseInt(userId));
+      setLikedPosts(liked);
+    } catch (err) {
+      console.error('いいねした投稿の取得に失敗しました:', err);
+      // エラーは表示せず、空の配列を設定
+      setLikedPosts([]);
+    } finally {
+      setIsLoadingLikes(false);
+    }
+  };
+
+  // 初回マウント時とユーザーID変更時にデータ取得
   useEffect(() => {
     if (isAuthenticated && userId) {
       fetchUserData();
     }
-  }, [isAuthenticated, userId])
+  }, [isAuthenticated, userId]);
+
+  // タブ切り替え時にいいね投稿を読み込み
+  useEffect(() => {
+    if (activeTab === 'likes' && likedPosts.length === 0 && !isLoadingLikes) {
+      fetchLikedPosts();
+    }
+  }, [activeTab, userId]);
+
+  // タブ切り替え処理
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+    if (tab === 'likes' && likedPosts.length === 0) {
+      fetchLikedPosts();
+    }
+  };
 
   const handlePostUpdated = (updatedPost: Post) => {
-    setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
-  }
+    if (activeTab === 'posts') {
+      setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
+    } else {
+      setLikedPosts(likedPosts.map(p => p.id === updatedPost.id ? updatedPost : p));
+    }
+  };
 
   const handlePostDeleted = (postId: number) => {
-    setPosts(posts.filter(p => p.id !== postId));
+    if (activeTab === 'posts') {
+      setPosts(posts.filter(p => p.id !== postId));
+    } else {
+      setLikedPosts(likedPosts.filter(p => p.id !== postId));
+    }
   };
 
   const handleLikeToggled = (postId: number, liked: boolean) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        return {
-          ...post,
-          likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
-          liked_by_current_user: liked
-        };
-      }
-      return post;
-    }));
+    // 現在表示中のタブのデータを更新
+    const updatePosts = (postsList: Post[]) => {
+      return postsList.map(post => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
+            liked_by_current_user: liked
+          };
+        }
+        return post;
+      });
+    };
+
+    if (activeTab === 'posts') {
+      setPosts(updatePosts(posts));
+    } else {
+      setLikedPosts(updatePosts(likedPosts));
+    }
   };
 
   if (!isAuthenticated) {
@@ -86,6 +146,51 @@ const UserPage = () => {
     );
   }
 
+  // 表示するコンテンツを決定
+  const renderContent = () => {
+    if (activeTab === 'posts') {
+      return (
+        <div className="posts-container">
+          {posts.length === 0 ? (
+            <p className="no-posts">投稿がありません。</p>
+          ) : (
+            posts.map(post => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onPostUpdated={handlePostUpdated}
+                onPostDeleted={handlePostDeleted}
+                onLikeToggled={handleLikeToggled}
+              />
+            ))
+          )}
+        </div>
+      );
+    } else {
+      if (isLoadingLikes) {
+        return <p className="loading-likes">いいねした投稿を読み込み中...</p>;
+      }
+
+      return (
+        <div className="posts-container">
+          {likedPosts.length === 0 ? (
+            <p className="no-posts">いいねした投稿はありません。</p>
+          ) : (
+            likedPosts.map(post => (
+              <PostCard
+                key={post.id}
+                post={post}
+                onPostUpdated={handlePostUpdated}
+                onPostDeleted={handlePostDeleted}
+                onLikeToggled={handleLikeToggled}
+              />
+            ))
+          )}
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="user-page">
       <div className="user-page-header">
@@ -105,23 +210,23 @@ const UserPage = () => {
         <p className="user-email">{user.email}</p>
       </div>
 
+      <div className="user-tabs">
+        <button
+          className={`tab-button ${activeTab === 'posts' ? 'active' : ''}`}
+          onClick={() => handleTabChange('posts')}
+        >
+          投稿
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'likes' ? 'active' : ''}`}
+          onClick={() => handleTabChange('likes')}
+        >
+          いいね
+        </button>
+      </div>
+
       <div className="user-content">
-        <h2 className="section-title">投稿</h2>
-        <div className="posts-container">
-          {posts.length === 0 ? (
-            <p className="no-posts">投稿がありません。</p>
-          ) : (
-            posts.map(post => (
-              <PostCard
-                key={post.id}
-                post={post}
-                onPostUpdated={handlePostUpdated}
-                onPostDeleted={handlePostDeleted}
-                onLikeToggled={handleLikeToggled}
-              />
-            ))
-          )}
-        </div>
+        {renderContent()}
       </div>
     </div>
   );

@@ -763,3 +763,48 @@ input:focus {
   font-weight: bold;
   margin-right: 10px;
 }
+
+/* ユーザータブのスタイル */
+.user-tabs {
+  display: flex;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 16px;
+}
+
+.tab-button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 15px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.tab-button:hover {
+  color: #1da1f2;
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.tab-button.active {
+  color: #1da1f2;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1da1f2;
+}
+
+.loading-likes {
+  text-align: center;
+  padding: 20px;
+  color: #657786;
+}
