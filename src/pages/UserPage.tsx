@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getUserDetail } from '../api/users';
 import { getUserPosts } from '../api/posts';
@@ -13,15 +13,19 @@ type TabType = 'posts' | 'likes';
 
 const UserPage = () => {
   const { userId } = useParams<{ userId: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [likedPosts, setLikedPosts] = useState<Post[]>([]);
-  const [activeTab, setActiveTab] = useState<TabType>('posts');
+  // URLからタブを取得し、なければデフォルト値を使用
+  const [activeTab, setActiveTab] = useState<TabType>(
+    (searchParams.get('tab') as TabType) || 'posts'
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingLikes, setIsLoadingLikes] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { user: currentUser, isAuthenticated } = useContext(AuthContext);
 
   // ユーザー情報と投稿を取得
   const fetchUserData = async () => {
@@ -50,34 +54,56 @@ const UserPage = () => {
 
     setIsLoadingLikes(true);
     try {
-      const liked = await getLikedPosts(parseInt(userId));
+      let liked = await getLikedPosts(parseInt(userId));
+
+      // 現在のユーザーとプロフィールページのユーザーが同じ場合のみ、いいね済みとして扱う
+      const isCurrentUserProfile = currentUser?.id === parseInt(userId);
+
+      liked = liked.map((post: Post) => ({
+        ...post,
+        // 自分自身のプロフィールを見ている場合のみ、いいねを強制的にtrueにする
+        liked_by_current_user: isCurrentUserProfile ? true : post.liked_by_current_user
+      }));
+
       setLikedPosts(liked);
     } catch (err) {
       console.error('いいねした投稿の取得に失敗しました:', err);
-      // エラーは表示せず、空の配列を設定
       setLikedPosts([]);
     } finally {
       setIsLoadingLikes(false);
     }
   };
 
-  // 初回マウント時とユーザーID変更時にデータ取得
   useEffect(() => {
     if (isAuthenticated && userId) {
       fetchUserData();
     }
   }, [isAuthenticated, userId]);
 
-  // タブ切り替え時にいいね投稿を読み込み
   useEffect(() => {
+    // タブに応じたコンテンツの読み込み
     if (activeTab === 'likes' && likedPosts.length === 0 && !isLoadingLikes) {
       fetchLikedPosts();
     }
+
+    // URLのクエリパラメータを更新
+    setSearchParams({ tab: activeTab });
   }, [activeTab, userId]);
+
+  // ページロード時にURLからタブを復元
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam === 'likes' || tabParam === 'posts') {
+      setActiveTab(tabParam as TabType);
+    }
+  }, []);
 
   // タブ切り替え処理
   const handleTabChange = (tab: TabType) => {
     setActiveTab(tab);
+    // URLのクエリパラメータを更新
+    setSearchParams({ tab });
+
     if (tab === 'likes' && likedPosts.length === 0) {
       fetchLikedPosts();
     }
@@ -100,24 +126,32 @@ const UserPage = () => {
   };
 
   const handleLikeToggled = (postId: number, liked: boolean) => {
-    // 現在表示中のタブのデータを更新
-    const updatePosts = (postsList: Post[]) => {
-      return postsList.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
-            liked_by_current_user: liked
-          };
-        }
-        return post;
-      });
-    };
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
+          liked_by_current_user: liked
+        };
+      }
+      return post;
+    }));
 
-    if (activeTab === 'posts') {
-      setPosts(updatePosts(posts));
-    } else {
-      setLikedPosts(updatePosts(likedPosts));
+    if (activeTab === 'likes') {
+      if (liked) {
+        setLikedPosts(likedPosts.map(post => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              likes_count: post.likes_count + 1,
+              liked_by_current_user: true
+            };
+          }
+          return post;
+        }));
+      } else {
+        setLikedPosts(likedPosts.filter(post => post.id !== postId));
+      }
     }
   };
 
