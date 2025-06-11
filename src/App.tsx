@@ -6,7 +6,8 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import PostDetailPage from './pages/PostDetailPage';
-import UserPage from './pages/UserPage';
+import UserPostsPage from './pages/UserPostsPage';
+import UserLikesPage from './pages/UserLikesPage';
 import './App.css';
 
 function App() {
@@ -38,7 +39,15 @@ function App() {
               path="/user/:userId"
               element={
                 <ProtectedRoute>
-                  <UserPage />
+                  <UserPostsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/:userId/likes"
+              element={
+                <ProtectedRoute>
+                  <UserLikesPage />
                 </ProtectedRoute>
               }
             />
