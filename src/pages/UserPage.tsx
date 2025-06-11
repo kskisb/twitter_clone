@@ -138,20 +138,16 @@ const UserPage = () => {
     }));
 
     if (activeTab === 'likes') {
-      if (liked) {
-        setLikedPosts(likedPosts.map(post => {
-          if (post.id === postId) {
-            return {
-              ...post,
-              likes_count: post.likes_count + 1,
-              liked_by_current_user: true
-            };
-          }
-          return post;
-        }));
-      } else {
-        setLikedPosts(likedPosts.filter(post => post.id !== postId));
-      }
+      setLikedPosts(likedPosts.map(post => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
+            liked_by_current_user: liked
+          };
+        }
+        return post;
+      }));
     }
   };
 
