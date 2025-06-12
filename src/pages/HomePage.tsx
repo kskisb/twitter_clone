@@ -6,11 +6,14 @@ import CreatePostForm from '../components/CreatePostForm';
 import CreatePostButton from '../components/CreatePostButton';
 import PostCard from '../components/PostCard';
 
+type TabType = 'all' | 'following';
+
 const HomePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const { isAuthenticated } = useContext(AuthContext);
+  const [activeTab, setActiveTab] = useState<TabType>('all');
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -57,6 +60,10 @@ const HomePage = () => {
     }));
   };
 
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="home-container not-authenticated">
@@ -66,44 +73,61 @@ const HomePage = () => {
     );
   }
 
-  if (isLoading && posts.length === 0) {
-    return (
-      <div className="home-container loading">
-        <p>読み込み中...</p>
-      </div>
-    );
-  }
+  const displayedPosts = activeTab === 'all' ? posts : []
 
-  if (error && posts.length === 0) {
-    return (
-      <div className="home-container error">
-        <p className="error-message">{error}</p>
-      </div>
-    );
+  const renderContent = () => {
+    if (isLoading && displayedPosts.length === 0) {
+      return <div className="loading-container"><p>読み込み中...</p></div>;
+    }
+
+    if (error && displayedPosts.length === 0) {
+      return <p className="error-message">{error}</p>;
+    }
+
+    if (activeTab === 'following' && displayedPosts.length === 0) {
+      return <p className="no-posts">フォロー中のユーザーの投稿はありません。</p>;
+    }
+
+    if (displayedPosts.length === 0) {
+      return <p className="no-posts">投稿がありません。</p>;
+    }
+
+    return displayedPosts.map(post => (
+      <PostCard
+        key={post.id}
+        post={post}
+        onPostUpdated={handlePostUpdated}
+        onPostDeleted={handlePostDeleted}
+        onLikeToggled={handleLikeToggled}
+      />
+    ));
   }
 
   return (
     <div className="home-container">
       <h1 className="page-title">ホーム</h1>
 
+      <div className="home-tabs">
+        <button
+          className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
+          onClick={() => handleTabChange('all')}
+        >
+          すべての投稿
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'following' ? 'active' : ''}`}
+          onClick={() => handleTabChange('following')}
+        >
+          フォロー中
+        </button>
+      </div>
+
       <div className="home-post-form-container">
         <CreatePostForm onPostCreated={handlePostCreated} />
       </div>
 
       <div className="posts-container">
-        {posts.length === 0 ? (
-          <p className="no-posts">投稿がありません。</p>
-        ) : (
-          posts.map(post => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onPostUpdated={handlePostUpdated}
-              onPostDeleted={handlePostDeleted}
-              onLikeToggled={handleLikeToggled}
-            />
-          ))
-        )}
+        {renderContent()}
       </div>
 
       <CreatePostButton onPostCreated={handlePostCreated} />
