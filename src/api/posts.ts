@@ -11,6 +11,11 @@ export const getUserPosts = async (userId: number): Promise<Post[]> => {
   return response.data;
 }
 
+export const getFollowingPosts = async (): Promise<Post[]> => {
+  const response = await client.get<Post[]>('/posts/following');
+  return response.data;
+}
+
 export const getPost = async (postId: number): Promise<Post> => {
   const response = await client.get<Post>(`/posts/${postId}`);
   return response.data;

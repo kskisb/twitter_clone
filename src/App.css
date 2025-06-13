@@ -202,14 +202,6 @@ input:focus {
   gap: 10px;
 }
 
-.post-card {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e6ecf0;
-}
-
 .post-header {
   display: flex;
   justify-content: space-between;
@@ -406,7 +398,6 @@ input:focus {
   background-color: #fff;
   border-radius: 8px;
   padding: 16px;
-  margin-bottom: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e6ecf0;
   transition: background-color 0.2s;
@@ -807,4 +798,93 @@ input:focus {
   text-align: center;
   padding: 20px;
   color: #657786;
+}
+
+/* ホームページのタブスタイル */
+.home-tabs {
+  display: flex;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 16px;
+}
+
+.home-tabs .tab-button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 15px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.home-tabs .tab-button:hover {
+  color: #1da1f2;
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.home-tabs .tab-button.active {
+  color: #1da1f2;
+}
+
+.home-tabs .tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1da1f2;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  color: #657786;
+}
+
+/* フォローボタンとプロフィール編集ボタンのスタイル */
+.follow-button, .edit-profile-button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.follow-button {
+  background-color: #1da1f2;
+  color: white;
+  border: 1px solid #1da1f2;
+}
+
+.follow-button:hover {
+  background-color: #1a91da;
+}
+
+.follow-button.following {
+  background-color: white;
+  color: #1da1f2;
+  border: 1px solid #1da1f2;
+}
+
+.follow-button.following:hover {
+  background-color: rgba(224, 36, 94, 0.1);
+  color: #E0245E;
+  border-color: #E0245E;
+}
+
+.edit-profile-button {
+  background-color: white;
+  color: #14171a;
+  border: 1px solid #ccd6dd;
+}
+
+.edit-profile-button:hover {
+  background-color: #f5f8fa;
 }
