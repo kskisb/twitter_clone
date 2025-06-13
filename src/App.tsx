@@ -8,6 +8,8 @@ import SignupPage from './pages/SignupPage';
 import PostDetailPage from './pages/PostDetailPage';
 import UserPostsPage from './pages/UserPostsPage';
 import UserLikesPage from './pages/UserLikesPage';
+import UserFollowingPage from './pages/UserFollowingPage'; // 追加
+import UserFollowersPage from './pages/UserFollowersPage'; // 追加
 import './App.css';
 
 function App() {
@@ -48,6 +50,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <UserLikesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/:userId/following"
+              element={
+                <ProtectedRoute>
+                  <UserFollowingPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/:userId/followers"
+              element={
+                <ProtectedRoute>
+                  <UserFollowersPage />
                 </ProtectedRoute>
               }
             />
