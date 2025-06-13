@@ -11,6 +11,12 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  const handleUserClick = () => {
+    if (user?.id) {
+      navigate(`/user/${user.id}`);
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
@@ -19,7 +25,13 @@ const Navbar = () => {
       <div className="navbar-menu">
         {isAuthenticated ? (
           <>
-            <span className="welcome-message">こんにちは、{user?.name}さん</span>
+            <div className="welcome-message">
+              こんにちは、
+              <span className="current-user-name" onClick={handleUserClick}>
+                {user?.name}
+              </span>
+              さん
+            </div>
             <button onClick={handleLogout} className="logout-button">
               ログアウト
             </button>

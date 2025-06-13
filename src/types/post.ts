@@ -8,4 +8,6 @@ export interface Post {
     id: number;
     name: string;
   }
+  likes_count: number;
+  liked_by_current_user: boolean;
 }
