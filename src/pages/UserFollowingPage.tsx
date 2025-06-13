@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getFollowing } from '../api/relationships';
 import { getUserDetail } from '../api/users';
+import UserFollowTabs from '../components/UserFollowTabs';
 import type { User } from '../types/user';
 
 const UserFollowingPage = () => {
@@ -19,11 +20,9 @@ const UserFollowingPage = () => {
       if (!userId || !isAuthenticated) return;
 
       try {
-        // ユーザー情報を取得
         const userData = await getUserDetail(parseInt(userId));
         setUser(userData);
 
-        // フォロー中のユーザー一覧を取得
         const following = await getFollowing(parseInt(userId));
         setFollowingUsers(following);
       } catch (err) {
@@ -68,8 +67,10 @@ const UserFollowingPage = () => {
         <button className="back-button" onClick={() => navigate(-1)}>
           ← 戻る
         </button>
-        <h1>{user.name}がフォロー中</h1>
+        <h1>{user.name}</h1>
       </div>
+
+      <UserFollowTabs user={user} activeTab="following" />
 
       {followingUsers.length === 0 ? (
         <p className="empty-message">フォローしているユーザーはいません。</p>

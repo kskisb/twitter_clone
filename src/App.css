@@ -991,3 +991,42 @@ input:focus {
   margin: 0 0 0 15px;
   font-size: 1.2em;
 }
+
+/* フォロー/フォロワータブのスタイル */
+.follow-tabs {
+  display: flex;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 16px;
+}
+
+.follow-tab-button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 15px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.follow-tab-button:hover {
+  color: #1da1f2;
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.follow-tab-button.active {
+  color: #1da1f2;
+}
+
+.follow-tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1da1f2;
+}

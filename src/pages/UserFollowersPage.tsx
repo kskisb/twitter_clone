@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getFollowers } from '../api/relationships';
 import { getUserDetail } from '../api/users';
+import UserFollowTabs from '../components/UserFollowTabs';
 import type { User } from '../types/user';
 
 const UserFollowersPage = () => {
@@ -19,11 +20,9 @@ const UserFollowersPage = () => {
       if (!userId || !isAuthenticated) return;
 
       try {
-        // ユーザー情報を取得
         const userData = await getUserDetail(parseInt(userId));
         setUser(userData);
 
-        // フォロワー一覧を取得
         const followerUsers = await getFollowers(parseInt(userId));
         setFollowers(followerUsers);
       } catch (err) {
@@ -68,8 +67,10 @@ const UserFollowersPage = () => {
         <button className="back-button" onClick={() => navigate(-1)}>
           ← 戻る
         </button>
-        <h1>{user.name}のフォロワー</h1>
+        <h1>{user.name}</h1>
       </div>
+
+      <UserFollowTabs user={user} activeTab="followers" />
 
       {followers.length === 0 ? (
         <p className="empty-message">フォロワーはいません。</p>
