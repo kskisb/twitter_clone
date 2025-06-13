@@ -38,7 +38,7 @@ const UserFollowingPage = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="container">
+      <div className="user-page not-authenticated">
         <p>このページを表示するにはログインが必要です。</p>
       </div>
     );
@@ -46,7 +46,7 @@ const UserFollowingPage = () => {
 
   if (isLoading) {
     return (
-      <div className="container">
+      <div className="user-page loading">
         <p>読み込み中...</p>
       </div>
     );
@@ -54,15 +54,15 @@ const UserFollowingPage = () => {
 
   if (error || !user) {
     return (
-      <div className="container">
-        <p>{error || 'ユーザーが見つかりません。'}</p>
+      <div className="user-page error">
+        <p className="error-message">{error || 'ユーザーが見つかりません。'}</p>
         <button onClick={() => navigate(-1)}>戻る</button>
       </div>
     );
   }
 
   return (
-    <div className="container">
+    <div className="user-page">
       <div className="page-header">
         <button className="back-button" onClick={() => navigate(-1)}>
           ← 戻る

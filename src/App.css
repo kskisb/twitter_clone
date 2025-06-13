@@ -1030,3 +1030,53 @@ input:focus {
   height: 2px;
   background-color: #1da1f2;
 }
+
+/* 新しいレイアウト構造 */
+.app-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-sidebar {
+  width: 275px;
+  min-height: calc(100vh - 50px); /* ナビバーの高さを引く */
+  padding: 20px;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 600px;
+  border-left: 1px solid #e6ecf0;
+  border-right: 1px solid #e6ecf0;
+  min-height: calc(100vh - 50px);
+}
+
+.right-sidebar {
+  width: 350px;
+  padding: 20px;
+  min-height: calc(100vh - 50px);
+}
+
+@media (max-width: 1200px) {
+  .left-sidebar, .right-sidebar {
+    display: none;
+  }
+
+  .main-content {
+    max-width: 100%;
+    border: none;
+  }
+}
+
+/* ユーザーページのスタイル */
+.user-page {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.user-page-header {
+  margin-bottom: 20px;
+  padding: 0 16px;
+}
