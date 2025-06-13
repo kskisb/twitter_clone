@@ -854,3 +854,46 @@ input:focus {
   padding: 20px;
   color: #657786;
 }
+
+/* フォローボタンとプロフィール編集ボタンのスタイル */
+.follow-button, .edit-profile-button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.follow-button {
+  background-color: #1da1f2;
+  color: white;
+  border: 1px solid #1da1f2;
+}
+
+.follow-button:hover {
+  background-color: #1a91da;
+}
+
+.follow-button.following {
+  background-color: white;
+  color: #1da1f2;
+  border: 1px solid #1da1f2;
+}
+
+.follow-button.following:hover {
+  background-color: rgba(224, 36, 94, 0.1);
+  color: #E0245E;
+  border-color: #E0245E;
+}
+
+.edit-profile-button {
+  background-color: white;
+  color: #14171a;
+  border: 1px solid #ccd6dd;
+}
+
+.edit-profile-button:hover {
+  background-color: #f5f8fa;
+}
