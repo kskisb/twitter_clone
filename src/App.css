@@ -888,3 +888,195 @@ input:focus {
 .edit-profile-button:hover {
   background-color: #f5f8fa;
 }
+
+/* ユーザー統計表示のスタイル */
+.user-stats {
+  display: flex;
+  margin: 15px 0;
+  gap: 20px;
+}
+
+.stat-button {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: background-color 0.2s;
+  border-radius: 5px;
+}
+
+.stat-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.stat-count {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.stat-label {
+  color: #536471;
+  font-size: 0.9em;
+}
+
+/* ユーザーリストのスタイル */
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.user-item {
+  border-bottom: 1px solid #e6ecf0;
+  padding: 15px 0;
+}
+
+.user-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1da1f2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-right: 15px;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  margin: 0;
+  font-weight: bold;
+}
+
+.user-email {
+  margin: 5px 0 0;
+  color: #536471;
+}
+
+.empty-message {
+  text-align: center;
+  color: #536471;
+  margin: 30px 0;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e6ecf0;
+}
+
+.page-header h1 {
+  margin: 0 0 0 15px;
+  font-size: 1.2em;
+}
+
+/* フォロー/フォロワータブのスタイル */
+.follow-tabs {
+  display: flex;
+  border-bottom: 1px solid #e1e8ed;
+  margin-bottom: 16px;
+}
+
+.follow-tab-button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 15px 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.follow-tab-button:hover {
+  color: #1da1f2;
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.follow-tab-button.active {
+  color: #1da1f2;
+}
+
+.follow-tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1da1f2;
+}
+
+/* 新しいレイアウト構造 */
+.app-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.left-sidebar {
+  width: 275px;
+  min-height: calc(100vh - 50px); /* ナビバーの高さを引く */
+  padding: 20px;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 600px;
+  border-left: 1px solid #e6ecf0;
+  border-right: 1px solid #e6ecf0;
+  min-height: calc(100vh - 50px);
+}
+
+.right-sidebar {
+  width: 350px;
+  padding: 20px;
+  min-height: calc(100vh - 50px);
+}
+
+@media (max-width: 1200px) {
+  .left-sidebar, .right-sidebar {
+    display: none;
+  }
+
+  .main-content {
+    max-width: 100%;
+    border: none;
+  }
+}
+
+/* ユーザーページのスタイル */
+.user-page {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.user-page-header {
+  margin-bottom: 20px;
+  padding: 0 16px;
+}

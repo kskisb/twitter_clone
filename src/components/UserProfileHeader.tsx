@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { followUser, unfollowUser, checkFollowingStatus } from '../api/relationships';
+import { followUser, unfollowUser, checkFollowingStatus, getFollowing, getFollowers } from '../api/relationships';
 import type { User } from '../types/user';
 
 interface UserProfileHeaderProps {
@@ -17,25 +17,38 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
   const [relationshipId, setRelationshipId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [followingCount, setFollowingCount] = useState(0);
+  const [followersCount, setFollowersCount] = useState(0);
 
   // 現在のユーザーとプロフィールページのユーザーが同じかどうかを確認
   const isOwnProfile = currentUser?.id === parseInt(userId);
 
-  // フォロー状態を取得
+  // フォロー状態とフォロー/フォロワー数を取得
   useEffect(() => {
-    const fetchFollowingStatus = async () => {
-      if (isOwnProfile || !currentUser) return;
-
+    const fetchUserRelationships = async () => {
       try {
-        const result = await checkFollowingStatus(parseInt(userId));
-        setIsFollowing(result.isFollowing);
-        setRelationshipId(result.relationshipId);
+        // フォローしているユーザー一覧を取得し、数をカウント
+        const following = await getFollowing(parseInt(userId));
+        setFollowingCount(following.length);
+
+        // フォロワー一覧を取得し、数をカウント
+        const followers = await getFollowers(parseInt(userId));
+        setFollowersCount(followers.length);
+
+        // 自分のプロフィールでない場合、フォロー状態も確認
+        if (!isOwnProfile && currentUser) {
+          const result = await checkFollowingStatus(parseInt(userId));
+          setIsFollowing(result.isFollowing);
+          setRelationshipId(result.relationshipId);
+        }
       } catch (err) {
-        console.error('フォロー状態の取得に失敗しました:', err);
+        console.error('ユーザー関係の取得に失敗しました:', err);
       }
     };
 
-    fetchFollowingStatus();
+    if (userId) {
+      fetchUserRelationships();
+    }
   }, [userId, currentUser, isOwnProfile]);
 
   // フォローボタンをクリックしたときの処理
@@ -50,10 +63,12 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
         await unfollowUser(relationshipId);
         setIsFollowing(false);
         setRelationshipId(undefined);
+        setFollowersCount(prev => Math.max(prev - 1, 0)); // フォロワー数を更新
       } else {
         const response = await followUser(parseInt(userId));
         setIsFollowing(true);
         setRelationshipId(response.relationshipId);
+        setFollowersCount(prev => prev + 1); // フォロワー数を更新
       }
     } catch (err: any) {
       console.error('フォロー操作に失敗しました:', err);
@@ -67,6 +82,15 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
   const handleEditProfile = () => {
     // ここにプロフィール編集のロジックを追加することができます
     alert('プロフィール編集機能は準備中です');
+  };
+
+  // フォロー/フォロワー一覧ページへのナビゲーション
+  const navigateToFollowingPage = () => {
+    navigate(`/user/${userId}/following`);
+  };
+
+  const navigateToFollowersPage = () => {
+    navigate(`/user/${userId}/followers`);
   };
 
   return (
@@ -86,6 +110,26 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
         </div>
         <h1 className="user-name">{user.name}</h1>
         <p className="user-email">{user.email}</p>
+
+        {/* フォロー/フォロワー数の表示 */}
+        <div className="user-stats">
+          <button 
+            className="stat-button" 
+            onClick={navigateToFollowingPage}
+            aria-label="フォロー一覧を見る"
+          >
+            <span className="stat-count">{followingCount}</span>
+            <span className="stat-label">フォロー中</span>
+          </button>
+          <button 
+            className="stat-button" 
+            onClick={navigateToFollowersPage}
+            aria-label="フォロワー一覧を見る"
+          >
+            <span className="stat-count">{followersCount}</span>
+            <span className="stat-label">フォロワー</span>
+          </button>
+        </div>
 
         {error && <div className="error-message">{error}</div>}
 
