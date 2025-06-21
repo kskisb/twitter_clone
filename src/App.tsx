@@ -22,9 +22,11 @@ import './styles/PostCard.css';
 import './styles/MessageButton.css';
 import './styles/Conversations.css';
 import './styles/ConversationDetail.css';
-import './styles/HomePage.css'; // 新規追加
-import './styles/Auth.css'; // 新規追加
-import './styles/Modal.css'; // 新規追加
+import './styles/HomePage.css';
+import './styles/Auth.css';
+import './styles/Modal.css';
+import './styles/LoadingSpinner.css';
+import './styles/PostSkeleton.css';
 
 function App() {
   return (
