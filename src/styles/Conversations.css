@@ -4,6 +4,10 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 0 15px;
+  background-color: white;
+  min-height: calc(100vh - 50px); /* ナビゲーションバーの高さを引いた画面の高さ */
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
 }
 
 .conversations-header {
@@ -28,10 +32,12 @@
   text-decoration: none;
   color: inherit;
   position: relative;
+  transition: background-color 0.2s ease;
 }
 
 .conversation-item:hover {
   background-color: rgba(0, 0, 0, 0.03);
+  text-decoration: none;
 }
 
 .conversation-avatar {
@@ -46,6 +52,12 @@
   font-size: 1.5rem;
   margin-right: 15px;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.conversation-avatar:hover {
+  opacity: 0.8;
 }
 
 .conversation-content {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { getConversations } from '../api/conversations';
 import type { Conversation } from '../types/conversation';
@@ -10,6 +10,7 @@ const ConversationsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -29,6 +30,12 @@ const ConversationsPage = () => {
 
     fetchConversations();
   }, [isAuthenticated]);
+  
+  const handleUserClick = (e: React.MouseEvent, userId: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/user/${userId}`);
+  };
 
   if (!isAuthenticated) {
     return (
@@ -91,7 +98,10 @@ const ConversationsPage = () => {
               key={conversation.id} 
               className="conversation-item"
             >
-              <div className="conversation-avatar">
+              <div 
+                className="conversation-avatar" 
+                onClick={(e) => handleUserClick(e, conversation.other_user.id)}
+              >
                 {conversation.other_user.name.charAt(0)}
               </div>
               <div className="conversation-content">
