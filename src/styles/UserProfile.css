@@ -18,14 +18,17 @@
 .user-header .back-button {
   background: none;
   border: none;
-  padding: 8px;
   cursor: pointer;
   color: #1da1f2;
   font-size: 1.2rem;
   margin-right: 15px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
+  padding: 0;
 }
 
 .user-header .back-button:hover {
@@ -97,6 +100,39 @@
 .edit-profile-button {
   background-color: transparent;
   color: #1da1f2;
+}
+
+.edit-profile-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.follow-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #1da1f2;
+  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
+}
+
+.follow-button span {
+  pointer-events: none; /* テキスト上のポインターイベントをボタンに伝播させる */
+  line-height: 1;
+}
+
+.edit-profile-button {
+  background-color: transparent;
+  color: #1da1f2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  min-height: 36px;
 }
 
 .edit-profile-button:hover {

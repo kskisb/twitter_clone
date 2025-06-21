@@ -12,7 +12,10 @@ const MessageButton = ({ userId, isOwnProfile }: MessageButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleMessageClick = async () => {
+  const handleMessageClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (isOwnProfile) return;
 
     setIsLoading(true);
@@ -37,6 +40,7 @@ const MessageButton = ({ userId, isOwnProfile }: MessageButtonProps) => {
       onClick={handleMessageClick}
       disabled={isLoading}
       aria-label="メッセージを送信"
+      type="button"
     >
       <svg viewBox="0 0 24 24" width="18" height="18">
         <path

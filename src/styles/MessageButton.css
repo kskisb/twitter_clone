@@ -1,8 +1,9 @@
 .message-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 0 16px;
   border: 1px solid #1da1f2;
   border-radius: 30px;
   background-color: transparent;
@@ -10,6 +11,9 @@
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s;
+  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
 }
 
 .message-button:hover {
@@ -24,4 +28,10 @@
 .message-button svg {
   width: 18px;
   height: 18px;
+  pointer-events: none; /* SVG上のポインターイベントをボタンに伝播させる */
+}
+
+.message-button span {
+  pointer-events: none; /* テキスト上のポインターイベントをボタンに伝播させる */
+  line-height: 1;
 }

@@ -51,7 +51,10 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
     }
   }, [userId, currentUser, isOwnProfile]);
 
-  const handleFollowToggle = async () => {
+  const handleFollowToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (isLoading) return;
 
     setIsLoading(true);
@@ -92,12 +95,12 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
       {/* プロフィール情報部分 */}
       <div className="user-profile">
         <div className="profile-banner"></div>
-        
+
         <div className="profile-main">
           <div className="profile-avatar-container">
             <div className="profile-avatar">{user.name.charAt(0)}</div>
           </div>
-          
+
           <div className="profile-actions">
             {isOwnProfile ? (
               <button className="edit-profile-button">プロフィール編集</button>
@@ -109,15 +112,15 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
                   onClick={handleFollowToggle}
                   disabled={isLoading}
                 >
-                  {isFollowing ? 'フォロー中' : 'フォローする'}
+                  <span>{isFollowing ? 'フォロー中' : 'フォローする'}</span>
                 </button>
               </div>
             )}
           </div>
-          
+
           <div className="profile-info">
             <h2 className="profile-name">{user.name}</h2>
-            
+
             <div className="profile-stats">
               <div className="stat-item" onClick={() => navigate(`/user/${userId}/following`)}>
                 <span className="stat-value">{followingCount}</span>
