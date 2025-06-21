@@ -81,6 +81,18 @@
   color: #657786;
   padding: 5px 0;
   cursor: pointer;
+  transition: color 0.2s;
+  border-radius: 50%;
+}
+
+.like-button:hover {
+  color: #e0245e;
+  background-color: rgba(224, 36, 94, 0.1);
+}
+
+.like-button:hover svg {
+  stroke: #e0245e;
+  fill: rgba(224, 36, 94, 0.1);
 }
 
 .like-button.liked {
@@ -89,6 +101,11 @@
 
 .like-icon {
   margin-right: 5px;
+  transition: transform 0.2s;
+}
+
+.like-button:hover .like-icon {
+  transform: scale(1.2);
 }
 
 .like-count {
