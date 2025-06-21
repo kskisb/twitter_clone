@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { updatePost } from '../api/posts';
 import type { Post } from '../types/post';
+import '../styles/Modal.css';
 
 interface EditPostModalProps {
   post: Post;

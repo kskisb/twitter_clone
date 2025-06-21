@@ -1,0 +1,199 @@
+.user-profile-container {
+  width: 100%;
+}
+
+/* ヘッダー部分 */
+.user-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+  z-index: 100;
+}
+
+.user-header .back-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #1da1f2;
+  font-size: 1.2rem;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.user-header .back-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.user-title {
+  flex: 1;
+}
+
+.user-title h1 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  color: #000;
+  text-align: left;
+}
+
+/* プロフィール部分 */
+.user-profile {
+  position: relative;
+}
+
+.profile-banner {
+  height: 150px;
+  background-color: #1da1f2;
+  position: relative;
+}
+
+.profile-main {
+  padding: 0 15px;
+  position: relative;
+}
+
+.profile-avatar-container {
+  position: relative;
+  margin-top: -40px;
+  margin-bottom: 12px;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #1da1f2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border: 4px solid #fff;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -40px;
+  margin-bottom: 10px;
+}
+
+.edit-profile-button, .follow-button {
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #1da1f2;
+}
+
+.edit-profile-button {
+  background-color: transparent;
+  color: #1da1f2;
+}
+
+.edit-profile-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.follow-button {
+  background-color: #1da1f2;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.follow-button:hover {
+  background-color: #1a91da;
+}
+
+.follow-button.following {
+  background-color: transparent;
+  color: #1da1f2;
+}
+
+.follow-button.following:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: red;
+  border-color: red;
+}
+
+.follow-button.following:hover::before {
+  content: "フォロー解除";
+}
+
+.follow-button.following:hover span {
+  display: none;
+}
+
+.profile-info {
+  margin-top: 10px;
+}
+
+.profile-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+}
+
+.profile-stats {
+  display: flex;
+  margin: 12px 0;
+}
+
+.stat-item {
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.stat-item:hover .stat-value {
+  text-decoration: underline;
+}
+
+.stat-value {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.stat-label {
+  color: #657786;
+}
+
+/* タブ部分 */
+.user-tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  margin-top: 16px;
+}
+
+.user-tab {
+  flex: 1;
+  text-align: center;
+  padding: 15px 0;
+  color: #657786;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s, box-shadow 0.2s;
+}
+
+.user-tab:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+  color: #1da1f2;
+  text-decoration: none;
+}
+
+.user-tab.active {
+  color: #1da1f2;
+  box-shadow: inset 0 -2px 0 #1da1f2;
+}
+
+.user-action-buttons {
+  display: flex;
+  gap: 10px;
+}

@@ -12,7 +12,19 @@ import UserFollowingPage from './pages/UserFollowingPage';
 import UserFollowersPage from './pages/UserFollowersPage';
 import ConversationsPage from './pages/ConversationsPage';
 import ConversationDetailPage from './pages/ConversationDetailPage';
+
+// スタイル
 import './App.css';
+import './styles/Navbar.css';
+import './styles/UserProfile.css';
+import './styles/UserFollow.css';
+import './styles/PostCard.css';
+import './styles/MessageButton.css';
+import './styles/Conversations.css';
+import './styles/ConversationDetail.css';
+import './styles/HomePage.css'; // 新規追加
+import './styles/Auth.css'; // 新規追加
+import './styles/Modal.css'; // 新規追加
 
 function App() {
   return (
@@ -20,7 +32,6 @@ function App() {
       <Router>
         <Navbar />
         <div className="app-container">
-          {/* 将来的にここに左側メニューが入る */}
           <div className="left-sidebar">
             {/* 将来的に実装 */}
           </div>
@@ -97,7 +108,6 @@ function App() {
             </Routes>
           </div>
 
-          {/* 将来的にここに右側の検索欄などが入る */}
           <div className="right-sidebar">
             {/* 将来的に実装 */}
           </div>

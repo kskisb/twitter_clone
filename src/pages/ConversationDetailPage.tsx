@@ -21,7 +21,7 @@ const ConversationDetailPage = () => {
   useEffect(() => {
     const fetchConversation = async () => {
       if (!conversationId || !isAuthenticated) return;
-      
+
       setIsLoading(true);
       try {
         const conversationData = await getConversation(parseInt(conversationId));
@@ -43,27 +43,27 @@ const ConversationDetailPage = () => {
 
     // ActionCableを使って会話のチャネルをサブスクライブ
     subscription.current = cable.subscriptions.create(
-      { 
-        channel: 'ConversationChannel', 
-        conversation_id: conversationId 
+      {
+        channel: 'ConversationChannel',
+        conversation_id: conversationId
       },
       {
-        connected() {
+        connected(): void {
           console.log('Connected to ConversationChannel');
         },
-        disconnected() {
+        disconnected(): void {
           console.log('Disconnected from ConversationChannel');
         },
-        received(data: Message) {
+        received(data: Message): void {
           // 新しいメッセージを受信したら会話オブジェクトを更新
           setConversation(prev => {
             if (!prev) return null;
-            
+
             // 自分が送信したメッセージは既に追加済みの場合があるので重複確認
             if (prev.messages.some(m => m.id === data.id)) {
               return prev;
             }
-            
+
             return {
               ...prev,
               messages: [...prev.messages, data]
@@ -88,13 +88,13 @@ const ConversationDetailPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newMessage.trim() || !conversationId || !user) return;
-    
+
     setIsSending(true);
     try {
       const sentMessage = await sendMessage(parseInt(conversationId), newMessage);
-      
+
       // 楽観的更新
       setConversation(prev => {
         if (!prev) return null;
@@ -103,7 +103,7 @@ const ConversationDetailPage = () => {
           messages: [...prev.messages, sentMessage]
         };
       });
-      
+
       setNewMessage('');
     } catch (err) {
       console.error('メッセージの送信に失敗しました:', err);
@@ -164,8 +164,8 @@ const ConversationDetailPage = () => {
           </div>
         ) : (
           conversation.messages.map(message => (
-            <div 
-              key={message.id} 
+            <div
+              key={message.id}
               className={`message ${message.user_id === user?.id ? 'outgoing' : 'incoming'}`}
             >
               {message.user_id !== user?.id && (
@@ -196,8 +196,8 @@ const ConversationDetailPage = () => {
           className="message-input"
           disabled={isSending}
         />
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="send-button"
           disabled={!newMessage.trim() || isSending}
         >

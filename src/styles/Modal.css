@@ -1,0 +1,66 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  padding: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #657786;
+}
+
+.modal-title {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.edit-post-form {
+  margin-top: 20px;
+}
+
+.edit-post-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd6dd;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  resize: none;
+}
+
+.edit-post-textarea:focus {
+  outline: none;
+  border-color: #1da1f2;
+}
+
+.edit-form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
