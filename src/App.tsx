@@ -3,13 +3,15 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import LoginPage from './pages/LoginPage';
 import PostDetailPage from './pages/PostDetailPage';
 import UserPostsPage from './pages/UserPostsPage';
 import UserLikesPage from './pages/UserLikesPage';
 import UserFollowingPage from './pages/UserFollowingPage';
 import UserFollowersPage from './pages/UserFollowersPage';
+import ConversationsPage from './pages/ConversationsPage';
+import ConversationDetailPage from './pages/ConversationDetailPage';
 import './App.css';
 
 function App() {
@@ -72,6 +74,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <UserFollowersPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/messages"
+                element={
+                  <ProtectedRoute>
+                    <ConversationsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/messages/:conversationId"
+                element={
+                  <ProtectedRoute>
+                    <ConversationDetailPage />
                   </ProtectedRoute>
                 }
               />

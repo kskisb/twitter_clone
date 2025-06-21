@@ -1,0 +1,112 @@
+/* 会話一覧ページのスタイル */
+.conversations-page {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.conversations-header {
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.conversations-header h1 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.conversations-list {
+  margin-top: 10px;
+}
+
+.conversation-item {
+  display: flex;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+.conversation-item:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.conversation-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #1da1f2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.conversation-content {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.conversation-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.other-user-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.last-updated {
+  color: #657786;
+  font-size: 0.9rem;
+}
+
+.conversation-last-message {
+  color: #657786;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+.unread-badge {
+  background-color: #1da1f2;
+  color: white;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 10px;
+  align-self: center;
+}
+
+.no-conversations {
+  padding: 30px 0;
+  text-align: center;
+  color: #657786;
+}
+
+/* 読み込み中や認証エラー */
+.conversations-page.loading,
+.conversations-page.not-authenticated,
+.conversations-page.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  color: #657786;
+}

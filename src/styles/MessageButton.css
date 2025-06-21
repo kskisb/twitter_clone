@@ -1,0 +1,28 @@
+/* メッセージボタン */
+.message-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid #1da1f2;
+  border-radius: 20px;
+  background-color: transparent;
+  color: #1da1f2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-right: 10px;
+}
+
+.message-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.message-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.user-action-buttons {
+  display: flex;
+}
