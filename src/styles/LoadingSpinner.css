@@ -1,0 +1,98 @@
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.loading-container.full-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+}
+
+.loading-spinner {
+  display: inline-block;
+  position: relative;
+}
+
+.loading-spinner.small {
+  width: 18px;
+  height: 18px;
+}
+
+.loading-spinner.medium {
+  width: 32px;
+  height: 32px;
+}
+
+.loading-spinner.large {
+  width: 48px;
+  height: 48px;
+}
+
+.loading-spinner svg {
+  animation: spinner-rotate 1s linear infinite;
+}
+
+.loading-spinner circle {
+  stroke: #1da1f2;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 80, 100;
+  stroke-dashoffset: 0;
+  animation: spinner-dash 1.5s ease-in-out infinite;
+}
+
+.loading-text {
+  margin-top: 12px;
+  color: #657786;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@keyframes spinner-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+/* コンテンツがロード中の場合のスケルトンローディング */
+.skeleton-item {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

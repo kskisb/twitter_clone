@@ -1,0 +1,132 @@
+.home-container {
+  width: 100%;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  margin: 0;
+}
+
+.home-tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px 0;
+  background: none;
+  border: none;
+  font-weight: bold;
+  color: #657786;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+  color: #1da1f2;
+}
+
+.tab-button.active {
+  color: #1da1f2;
+  box-shadow: inset 0 -2px 0 #1da1f2;
+}
+
+.home-post-form-container {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.posts-container {
+  border-top: 1px solid #eee;
+}
+
+.create-post-form {
+  display: flex;
+  padding: 10px 0;
+}
+
+.create-post-avatar {
+  margin-right: 12px;
+}
+
+.create-post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-post-textarea {
+  width: 100%;
+  border: none;
+  resize: none;
+  font-size: 18px;
+  margin-bottom: 10px;
+  min-height: 80px;
+}
+
+.create-post-textarea:focus {
+  outline: none;
+}
+
+.create-post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.character-count {
+  color: #657786;
+  font-size: 14px;
+}
+
+.post-button {
+  background-color: #1da1f2;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.post-button:hover {
+  background-color: #1a91da;
+}
+
+.post-button:disabled {
+  background-color: #9bd1f9;
+  cursor: not-allowed;
+}
+
+.fixed-post-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #1da1f2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.fixed-post-button:hover {
+  background-color: #1a91da;
+}
+
+.no-posts {
+  padding: 30px 15px;
+  text-align: center;
+  color: #657786;
+}
