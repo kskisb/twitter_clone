@@ -1,7 +1,9 @@
-import { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { followUser, unfollowUser, checkFollowingStatus, getFollowing, getFollowers } from '../api/relationships';
+import { checkFollowingStatus, followUser, unfollowUser } from '../api/relationships';
+import { getFollowing, getFollowers } from '../api/relationships';
+import MessageButton from './MessageButton';
 import type { User } from '../types/user';
 
 interface UserProfileHeaderProps {
@@ -16,7 +18,7 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
   const [isFollowing, setIsFollowing] = useState(false);
   const [relationshipId, setRelationshipId] = useState<number | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [_error, setError] = useState('');
   const [followingCount, setFollowingCount] = useState(0);
   const [followersCount, setFollowersCount] = useState(0);
 
@@ -27,22 +29,20 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
   useEffect(() => {
     const fetchUserRelationships = async () => {
       try {
-        // フォローしているユーザー一覧を取得し、数をカウント
+        // フォロー/フォロワー数の取得
         const following = await getFollowing(parseInt(userId));
-        setFollowingCount(following.length);
-
-        // フォロワー一覧を取得し、数をカウント
         const followers = await getFollowers(parseInt(userId));
+        setFollowingCount(following.length);
         setFollowersCount(followers.length);
 
-        // 自分のプロフィールでない場合、フォロー状態も確認
+        // 自分のプロフィールでない場合はフォロー状態を確認
         if (!isOwnProfile && currentUser) {
-          const result = await checkFollowingStatus(parseInt(userId));
-          setIsFollowing(result.isFollowing);
-          setRelationshipId(result.relationshipId);
+          const status = await checkFollowingStatus(parseInt(userId));
+          setIsFollowing(status.isFollowing);
+          setRelationshipId(status.relationshipId);
         }
       } catch (err) {
-        console.error('ユーザー関係の取得に失敗しました:', err);
+        console.error('フォロー情報の取得に失敗しました:', err);
       }
     };
 
@@ -51,8 +51,10 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
     }
   }, [userId, currentUser, isOwnProfile]);
 
-  // フォローボタンをクリックしたときの処理
-  const handleFollowToggle = async () => {
+  const handleFollowToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (isLoading) return;
 
     setIsLoading(true);
@@ -63,12 +65,12 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
         await unfollowUser(relationshipId);
         setIsFollowing(false);
         setRelationshipId(undefined);
-        setFollowersCount(prev => Math.max(prev - 1, 0)); // フォロワー数を更新
+        setFollowersCount(prev => Math.max(prev - 1, 0));
       } else {
         const response = await followUser(parseInt(userId));
         setIsFollowing(true);
         setRelationshipId(response.relationshipId);
-        setFollowersCount(prev => prev + 1); // フォロワー数を更新
+        setFollowersCount(prev => prev + 1);
       }
     } catch (err: any) {
       console.error('フォロー操作に失敗しました:', err);
@@ -78,99 +80,77 @@ const UserProfileHeader = ({ user, userId, activeTab }: UserProfileHeaderProps) 
     }
   };
 
-  // プロフィール編集ボタンをクリックしたときの処理
-  const handleEditProfile = () => {
-    // ここにプロフィール編集のロジックを追加することができます
-    alert('プロフィール編集機能は準備中です');
-  };
-
-  // フォロー/フォロワー一覧ページへのナビゲーション
-  const navigateToFollowingPage = () => {
-    navigate(`/user/${userId}/following`);
-  };
-
-  const navigateToFollowersPage = () => {
-    navigate(`/user/${userId}/followers`);
-  };
-
   return (
-    <>
-      <div className="user-page-header">
-        <button
-          className="back-button"
-          onClick={() => navigate(-1)}
-        >
+    <div className="user-profile-container">
+      {/* ヘッダー部分 */}
+      <div className="user-header">
+        <button className="back-button" onClick={() => navigate(-1)}>
           ← 戻る
         </button>
+        <div className="user-title">
+          <h1>{user.name}</h1>
+        </div>
       </div>
 
+      {/* プロフィール情報部分 */}
       <div className="user-profile">
-        <div className="user-avatar">
-          {user.name.charAt(0)}
+        <div className="profile-banner"></div>
+
+        <div className="profile-main">
+          <div className="profile-avatar-container">
+            <div className="profile-avatar">{user.name.charAt(0)}</div>
+          </div>
+
+          <div className="profile-actions">
+            {isOwnProfile ? (
+              <button className="edit-profile-button">プロフィール編集</button>
+            ) : (
+              <div className="user-action-buttons">
+                <MessageButton userId={parseInt(userId)} isOwnProfile={isOwnProfile} />
+                <button
+                  className={`follow-button ${isFollowing ? 'following' : ''}`}
+                  onClick={handleFollowToggle}
+                  disabled={isLoading}
+                >
+                  <span>{isFollowing ? 'フォロー中' : 'フォローする'}</span>
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="profile-info">
+            <h2 className="profile-name">{user.name}</h2>
+
+            <div className="profile-stats">
+              <div className="stat-item" onClick={() => navigate(`/user/${userId}/following`)}>
+                <span className="stat-value">{followingCount}</span>
+                <span className="stat-label">フォロー中</span>
+              </div>
+              <div className="stat-item" onClick={() => navigate(`/user/${userId}/followers`)}>
+                <span className="stat-value">{followersCount}</span>
+                <span className="stat-label">フォロワー</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <h1 className="user-name">{user.name}</h1>
-        <p className="user-email">{user.email}</p>
-
-        {/* フォロー/フォロワー数の表示 */}
-        <div className="user-stats">
-          <button 
-            className="stat-button" 
-            onClick={navigateToFollowingPage}
-            aria-label="フォロー一覧を見る"
-          >
-            <span className="stat-count">{followingCount}</span>
-            <span className="stat-label">フォロー中</span>
-          </button>
-          <button 
-            className="stat-button" 
-            onClick={navigateToFollowersPage}
-            aria-label="フォロワー一覧を見る"
-          >
-            <span className="stat-count">{followersCount}</span>
-            <span className="stat-label">フォロワー</span>
-          </button>
-        </div>
-
-        {error && <div className="error-message">{error}</div>}
-
-        {/* 自分のプロフィールの場合は編集ボタン、他のユーザーの場合はフォローボタンを表示 */}
-        {isOwnProfile ? (
-          <button
-            className="edit-profile-button"
-            onClick={handleEditProfile}
-          >
-            プロフィールを編集
-          </button>
-        ) : (
-          <button
-            className={`follow-button ${isFollowing ? 'following' : ''}`}
-            onClick={handleFollowToggle}
-            disabled={isLoading}
-          >
-            {isLoading
-              ? '処理中...'
-              : isFollowing
-                ? 'フォロー中'
-                : 'フォローする'}
-          </button>
-        )}
       </div>
 
+      {/* タブ部分 */}
       <div className="user-tabs">
-        <button
-          className={`tab-button ${activeTab === 'posts' ? 'active' : ''}`}
-          onClick={() => navigate(`/user/${userId}`)}
+        <Link
+          to={`/user/${userId}`}
+          className={`user-tab ${activeTab === 'posts' ? 'active' : ''}`}
         >
           投稿
-        </button>
-        <button
-          className={`tab-button ${activeTab === 'likes' ? 'active' : ''}`}
-          onClick={() => navigate(`/user/${userId}/likes`)}
+        </Link>
+        <Link
+          to={`/user/${userId}/likes`}
+          className={`user-tab ${activeTab === 'likes' ? 'active' : ''}`}
         >
           いいね
-        </button>
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

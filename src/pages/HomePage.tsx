@@ -5,6 +5,9 @@ import type { Post } from '../types/post';
 import CreatePostForm from '../components/CreatePostForm';
 import CreatePostButton from '../components/CreatePostButton';
 import PostCard from '../components/PostCard';
+import LoadingSpinner from '../components/LoadingSpinner';
+import PostSkeleton from '../components/PostSkeleton';
+import '../styles/HomePage.css';
 
 type TabType = 'all' | 'following';
 
@@ -13,100 +16,90 @@ const HomePage = () => {
   const [followingPosts, setFollowingPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFollowing, setIsLoadingFollowing] = useState(true);
-  const [error, setError] = useState('');
-  const [followingError, setFollowingError] = useState('');
-  const { isAuthenticated } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState<TabType>('all');
+  const [error, setError] = useState('');
+  const { user, isAuthenticated } = useContext(AuthContext);
+  const [isCreatingPost, setIsCreatingPost] = useState(false);
 
   const fetchAllPosts = async () => {
-    setIsLoading(true);
     try {
-      const postsData = await getAllPosts();
-      setPosts(postsData);
+      setIsLoading(true);
       setError('');
+      const fetchedPosts = await getAllPosts();
+      setPosts(fetchedPosts);
     } catch (err) {
       console.error('投稿の取得に失敗しました:', err);
-      setError('投稿の取得に失敗しました。後でもう一度お試しください。');
+      setError('投稿の取得中にエラーが発生しました。');
     } finally {
       setIsLoading(false);
     }
   };
 
   const fetchFollowingPosts = async () => {
-    setIsLoadingFollowing(true);
     try {
-      const postsData = await getFollowingPosts();
-      setFollowingPosts(postsData);
-      setFollowingError('');
+      setIsLoadingFollowing(true);
+      setError('');
+      const fetchedPosts = await getFollowingPosts();
+      setFollowingPosts(fetchedPosts);
     } catch (err) {
       console.error('フォロー中の投稿の取得に失敗しました:', err);
-      setFollowingError('フォロー中の投稿の取得に失敗しました。後でもう一度お試しください。');
+      setError('フォロー中の投稿の取得中にエラーが発生しました。');
     } finally {
       setIsLoadingFollowing(false);
     }
   };
 
-  // 初期ロード時と認証状態変更時に全ての投稿を取得
   useEffect(() => {
     if (isAuthenticated) {
       fetchAllPosts();
+      fetchFollowingPosts();
     }
   }, [isAuthenticated]);
 
-  // タブが切り替わった時にそのタブの投稿を取得
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    
-    if (activeTab === 'following') {
-      fetchFollowingPosts();
-    }
-  }, [activeTab, isAuthenticated]);
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+  };
 
   const handlePostCreated = () => {
-    fetchAllPosts();
-    if (activeTab === 'following') {
-      fetchFollowingPosts();
-    }
+    setIsCreatingPost(true);
+    fetchAllPosts().finally(() => {
+      setIsCreatingPost(false);
+    });
+    fetchFollowingPosts();
   };
 
   const handlePostUpdated = (updatedPost: Post) => {
-    // 全ての投稿リストを更新
-    setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
-    
-    // フォロー中の投稿リストも更新
-    setFollowingPosts(followingPosts.map(p => p.id === updatedPost.id ? updatedPost : p));
+    setPosts(posts.map(post => post.id === updatedPost.id ? updatedPost : post));
+    setFollowingPosts(followingPosts.map(post => post.id === updatedPost.id ? updatedPost : post));
   };
 
   const handlePostDeleted = (postId: number) => {
-    // 全ての投稿リストから削除
-    setPosts(posts.filter(p => p.id !== postId));
-    
-    // フォロー中の投稿リストからも削除
-    setFollowingPosts(followingPosts.filter(p => p.id !== postId));
+    setPosts(posts.filter(post => post.id !== postId));
+    setFollowingPosts(followingPosts.filter(post => post.id !== postId));
   };
 
   const handleLikeToggled = (postId: number, liked: boolean) => {
-    // いいねの状態を更新する処理
-    const updatePostsWithLike = (postsList: Post[]) => {
-      return postsList.map(post => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            likes_count: liked ? (post.likes_count || 0) + 1 : Math.max((post.likes_count || 0) - 1, 0),
-            liked_by_current_user: liked
-          };
-        }
-        return post;
-      });
-    };
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          likes_count: liked ? (post.likes_count || 0) + 1 : Math.max(0, (post.likes_count || 0) - 1),
+          liked_by_current_user: liked
+        };
+      }
+      return post;
+    }));
 
-    // 両方の投稿リストを更新
-    setPosts(updatePostsWithLike(posts));
-    setFollowingPosts(updatePostsWithLike(followingPosts));
-  };
-
-  const handleTabChange = (tab: TabType) => {
-    setActiveTab(tab);
+    setFollowingPosts(followingPosts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          likes_count: liked ? (post.likes_count || 0) + 1 : Math.max(0, (post.likes_count || 0) - 1),
+          liked_by_current_user: liked
+        };
+      }
+      return post;
+    }));
   };
 
   if (!isAuthenticated) {
@@ -118,41 +111,13 @@ const HomePage = () => {
     );
   }
 
-  // 表示する投稿リストを決定
   const displayedPosts = activeTab === 'all' ? posts : followingPosts;
-  const currentError = activeTab === 'all' ? error : followingError;
-  const isCurrentlyLoading = activeTab === 'all' ? isLoading : isLoadingFollowing;
-
-  const renderContent = () => {
-    if (isCurrentlyLoading && displayedPosts.length === 0) {
-      return <div className="loading-container"><p>読み込み中...</p></div>;
-    }
-
-    if (currentError && displayedPosts.length === 0) {
-      return <p className="error-message">{currentError}</p>;
-    }
-
-    if (displayedPosts.length === 0) {
-      return <p className="no-posts">
-        {activeTab === 'following' ? 'フォロー中のユーザーの投稿はありません。' : '投稿がありません。'}
-      </p>;
-    }
-
-    return displayedPosts.map(post => (
-      <PostCard
-        key={post.id}
-        post={post}
-        onPostUpdated={handlePostUpdated}
-        onPostDeleted={handlePostDeleted}
-        onLikeToggled={handleLikeToggled}
-      />
-    ));
-  };
+  const currentLoading = activeTab === 'all' ? isLoading : isLoadingFollowing;
 
   return (
     <div className="home-container">
       <h1 className="page-title">ホーム</h1>
-
+      
       <div className="home-tabs">
         <button
           className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
@@ -167,13 +132,50 @@ const HomePage = () => {
           フォロー中
         </button>
       </div>
-
-      <div className="home-post-form-container">
-        <CreatePostForm onPostCreated={handlePostCreated} />
-      </div>
+      
+      {user && (
+        <div className="home-post-form-container">
+          <CreatePostForm 
+            onPostCreated={handlePostCreated} 
+            placeholder="いまどうしてる？" 
+          />
+        </div>
+      )}
 
       <div className="posts-container">
-        {renderContent()}
+        {error && <p className="error-message">{error}</p>}
+        
+        {/* ポスト作成中のローディング表示 */}
+        {isCreatingPost && (
+          <div className="creating-post-indicator">
+            <LoadingSpinner size="small" text="投稿を作成中..." />
+          </div>
+        )}
+        
+        {/* 投稿読み込み中のUI改善 */}
+        {currentLoading ? (
+          <PostSkeleton count={5} />
+        ) : (
+          <>
+            {displayedPosts.length === 0 ? (
+              <div className="no-posts">
+                {activeTab === 'all' 
+                  ? '投稿がありません。最初の投稿をしてみましょう！' 
+                  : 'フォロー中のユーザーの投稿がありません。ユーザーをフォローしてみましょう！'}
+              </div>
+            ) : (
+              displayedPosts.map(post => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  onPostUpdated={handlePostUpdated}
+                  onPostDeleted={handlePostDeleted}
+                  onLikeToggled={handleLikeToggled}
+                />
+              ))
+            )}
+          </>
+        )}
       </div>
 
       <CreatePostButton onPostCreated={handlePostCreated} />

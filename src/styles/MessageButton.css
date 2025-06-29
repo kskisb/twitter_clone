@@ -1,0 +1,40 @@
+.message-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid #1da1f2;
+  border-radius: 30px;
+  background-color: transparent;
+  color: #1da1f2;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.message-button:hover {
+  background-color: rgba(29, 161, 242, 0.1);
+}
+
+.message-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.message-button svg {
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.message-button span {
+  pointer-events: none;
+  line-height: 1;
+  white-space: nowrap;
+}

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import CreatePostForm from './CreatePostForm';
+import '../styles/Modal.css';
 
 interface CreatePostModalProps {
   onClose: () => void;

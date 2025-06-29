@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import '../styles/UserFollow.css';
 import type { User } from '../types/user';
 
 interface UserFollowTabsProps {

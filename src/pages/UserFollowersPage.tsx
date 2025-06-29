@@ -65,7 +65,7 @@ const UserFollowersPage = () => {
     <div className="user-page">
       <div className="page-header">
         <button className="back-button" onClick={() => navigate(-1)}>
-          ← 戻る
+          ←
         </button>
         <h1>{user.name}</h1>
       </div>
