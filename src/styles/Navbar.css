@@ -1,12 +1,14 @@
 .navbar {
   background-color: #fff;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eef3f4;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 50px;
   z-index: 1000;
+  backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .navbar-container {
@@ -16,7 +18,7 @@
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 15px;
+  padding: 0 16px;
 }
 
 .navbar-brand {
@@ -27,14 +29,19 @@
 .brand-logo {
   color: #1da1f2;
   font-size: 1.3rem;
-  font-weight: bold;
+  font-weight: 750;
   text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.brand-logo:hover {
+  color: #1a91da;
 }
 
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .nav-icon-link {
@@ -54,28 +61,74 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #657786;
+  color: #536471;
+  font-size: 14px;
+}
+
+.greeting-text {
+  white-space: nowrap;
 }
 
 .current-user-name {
-  font-weight: bold;
+  font-weight: 600;
   color: #1da1f2;
   cursor: pointer;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
 }
 
 .current-user-name:hover {
-  text-decoration: underline;
+  color: #1a91da;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1da1f2, #0984e3);
+  color: white;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
 }
 
 .logout-button {
   background-color: #1da1f2;
   color: white;
   border: none;
-  border-radius: 30px;
-  padding: 8px 16px;
-  font-weight: bold;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.logout-button:hover {
+  background-color: #1a91da;
+  transform: translateY(-1px);
+}
+
+.logout-text {
+  white-space: nowrap;
+}
+
+.logout-icon {
+  display: none;
 }
 
 .logout-button:hover {
@@ -102,4 +155,94 @@
 
 .nav-link.signup:hover {
   background-color: #1a91da;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0 12px;
+  }
+  
+  .navbar-menu {
+    gap: 8px;
+  }
+
+  /* モバイルではウェルカムメッセージを非表示にしてアバターを表示 */
+  .welcome-message {
+    display: none;
+  }
+  
+  .user-avatar {
+    display: flex;
+  }
+  
+  .logout-button {
+    padding: 8px;
+    border-radius: 50%;
+    min-width: 36px;
+    height: 36px;
+  }
+  
+  .logout-text {
+    display: none;
+  }
+  
+  .logout-icon {
+    display: block;
+  }
+  
+  .nav-icon-link {
+    padding: 6px;
+  }
+  
+  .nav-link {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  .nav-link.signup {
+    padding: 8px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 8px;
+  }
+  
+  .navbar-menu {
+    gap: 6px;
+  }
+
+  .current-user-name {
+    max-width: 80px;
+  }
+  
+  .nav-link {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}
+
+/* 超小画面用 */
+@media (max-width: 360px) {
+  .navbar-menu {
+    gap: 4px;
+  }
+  
+  .logout-button,
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+  
+  .nav-icon-link {
+    padding: 4px;
+  }
+  
+  .nav-icon-link svg {
+    width: 20px;
+    height: 20px;
+  }
 }
