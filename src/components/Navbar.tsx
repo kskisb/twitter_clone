@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-brand">
-          <Link to="/" className="brand-logo">Twitter</Link>
+          <Link to="/" className="brand-logo">Twitter Clone</Link>
         </div>
         <div className="navbar-menu">
           {isAuthenticated ? (
@@ -35,14 +35,23 @@ const Navbar = () => {
                 </svg>
               </Link>
               <div className="welcome-message">
-                <span>こんにちは、</span>
+                <span className="greeting-text">こんにちは、</span>
                 <span className="current-user-name" onClick={handleUserClick}>
                   {user?.name}
                 </span>
-                <span>さん</span>
+                <span className="greeting-text">さん</span>
+              </div>
+              <div className="user-avatar" onClick={handleUserClick} title={`${user?.name}のプロフィール`}>
+                {user?.name?.charAt(0) || 'U'}
               </div>
               <button onClick={handleLogout} className="logout-button">
-                ログアウト
+                <span className="logout-text">ログアウト</span>
+                <svg className="logout-icon" viewBox="0 0 24 24" width="20" height="20">
+                  <path 
+                    d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"
+                    fill="currentColor"
+                  />
+                </svg>
               </button>
             </>
           ) : (

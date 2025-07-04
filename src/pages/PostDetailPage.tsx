@@ -36,8 +36,14 @@ const PostDetailPage = () => {
     fetchPost();
   }, [postId]);
 
-  const handleEditSuccess = (updatePost: Post) => {
-    setPost(updatePost);
+  const handleEditSuccess = (updatedPost: Post) => {
+    // 元の投稿のユーザー情報を保持
+    const postWithUser = {
+      ...updatedPost,
+      user: post?.user,
+      user_id: post?.user_id
+    };
+    setPost(postWithUser);
   }
 
   const handleDeleteSuccess = () => {
@@ -137,20 +143,20 @@ const PostDetailPage = () => {
           {post.content}
         </div>
 
-        <div className="post-actions-bar">
+        <div className="post-detail-time">
+          {formatDistance(new Date(post.created_at), new Date(), {
+            addSuffix: true,
+            locale: ja
+          })}
+        </div>
+
+        <div className="post-detail-actions">
           <LikeButton
             likesCount={post.likes_count || 0}
             isLiked={post.liked_by_current_user || false}
             onLike={handleLike}
             onUnlike={handleUnlike}
           />
-        </div>
-
-        <div className="post-detail-time">
-          {formatDistance(new Date(post.created_at), new Date(), {
-            addSuffix: true,
-            locale: ja
-          })}
         </div>
       </div>
     </div>

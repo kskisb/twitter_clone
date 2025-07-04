@@ -1,22 +1,24 @@
 .post-skeleton {
-  padding: 15px;
-  border-bottom: 1px solid #eee;
-  animation: fade-in 0.5s ease-in-out;
+  padding: 16px;
+  border-bottom: 1px solid #eef3f4;
+  animation: fade-in 0.6s ease-in-out;
+  background-color: #fff;
 }
 
 .post-skeleton-header {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .post-skeleton-avatar {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background: linear-gradient(90deg, #f7f9fa 25%, #eef3f4 50%, #f7f9fa 75%);
   background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  animation: skeleton-loading 1.8s infinite ease-in-out;
   margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .post-skeleton-user-info {
@@ -25,21 +27,21 @@
 
 .post-skeleton-name {
   height: 16px;
-  width: 120px;
-  margin-bottom: 4px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  width: 140px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f7f9fa 25%, #eef3f4 50%, #f7f9fa 75%);
   background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  animation: skeleton-loading 1.8s infinite ease-in-out;
 }
 
 .post-skeleton-username {
   height: 14px;
-  width: 80px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  width: 100px;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #f7f9fa 25%, #eef3f4 50%, #f7f9fa 75%);
   background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  animation: skeleton-loading 1.8s infinite ease-in-out;
 }
 
 .post-skeleton-content {
@@ -49,30 +51,39 @@
 
 .post-skeleton-text {
   height: 16px;
-  margin-bottom: 8px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f7f9fa 25%, #eef3f4 50%, #f7f9fa 75%);
   background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  animation: skeleton-loading 1.8s infinite ease-in-out;
+}
+
+.post-skeleton-text:nth-child(1) {
+  width: 95%;
+}
+
+.post-skeleton-text:nth-child(2) {
+  width: 85%;
 }
 
 .post-skeleton-text.short {
-  width: 70%;
+  width: 60%;
 }
 
 .post-skeleton-actions {
   display: flex;
   margin-left: 60px;
+  margin-top: 16px;
 }
 
 .post-skeleton-action {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  margin-right: 30px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  margin-right: 40px;
+  background: linear-gradient(90deg, #f7f9fa 25%, #eef3f4 50%, #f7f9fa 75%);
   background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+  animation: skeleton-loading 1.8s infinite ease-in-out;
 }
 
 @keyframes skeleton-loading {
@@ -86,7 +97,7 @@
 
 @keyframes fade-in {
   0% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
   100% {
     opacity: 1;

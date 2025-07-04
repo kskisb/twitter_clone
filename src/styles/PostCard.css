@@ -1,16 +1,19 @@
 .post-card {
   display: block;
-  padding: 15px;
-  border-bottom: 1px solid #eee;
+  padding: 16px;
+  border-bottom: 1px solid #eef3f4;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
   text-decoration: none;
   color: inherit;
+  background-color: #fff;
+  border-left: 4px solid transparent;
 }
 
 .post-card:hover {
   background-color: rgba(0, 0, 0, 0.03);
   text-decoration: none;
+  border-left-color: #1da1f2;
 }
 
 .post-header {
@@ -30,14 +33,21 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #1da1f2;
+  background: linear-gradient(135deg, #1da1f2, #0984e3);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
+  font-weight: 600;
   margin-right: 12px;
   flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(29, 161, 242, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
 }
 
 .user-details {
@@ -46,10 +56,15 @@
 }
 
 .user-name {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 15px;
   margin-bottom: 2px;
-  color: #000;
+  color: #0f1419;
+  transition: color 0.2s ease;
+}
+
+.user-name:hover {
+  color: #1da1f2;
 }
 
 .post-content {
@@ -57,8 +72,9 @@
   white-space: pre-wrap;
   word-break: break-word;
   font-size: 15px;
-  line-height: 1.4;
+  line-height: 1.5;
   margin-left: 60px;
+  color: #0f1419;
 }
 
 .post-time {
@@ -78,25 +94,31 @@
   align-items: center;
   background: none;
   border: none;
-  color: #657786;
-  padding: 5px 0;
+  color: #536471;
+  padding: 8px 12px;
   cursor: pointer;
-  transition: color 0.2s;
-  border-radius: 50%;
+  transition: all 0.2s ease;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-right: 20px;
 }
 
 .like-button:hover {
-  color: #e0245e;
-  background-color: rgba(224, 36, 94, 0.1);
+  color: #f91880;
+  background-color: rgba(249, 24, 128, 0.1);
 }
 
 .like-button:hover svg {
-  stroke: #e0245e;
-  fill: rgba(224, 36, 94, 0.1);
+  stroke: #f91880;
+  fill: rgba(249, 24, 128, 0.1);
 }
 
 .like-button.liked {
-  color: #e0245e;
+  color: #f91880;
+}
+
+.like-button.liked svg {
+  fill: #f91880;
 }
 
 .like-icon {
@@ -121,48 +143,99 @@
 .post-detail-header {
   display: flex;
   align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid #eee;
+  padding: 16px;
+  border-bottom: 1px solid #eef3f4;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .post-detail-header .back-button {
   background: none;
   border: none;
-  color: #1da1f2;
-  font-size: 20px;
-  margin-right: 20px;
+  color: #0f1419;
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 24px;
   cursor: pointer;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  min-width: 34px;
-  height: 34px;
+  min-width: 36px;
+  height: 36px;
   padding: 0 8px;
+  transition: background-color 0.2s ease;
+}
+
+.post-detail-header .back-button:hover {
+  background-color: rgba(15, 20, 25, 0.1);
 }
 
 .page-title {
-  font-size: 19px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 800;
   margin: 0;
+  color: #0f1419;
 }
 
 .post-detail-card {
-  padding: 15px;
+  padding: 20px;
+}
+
+.post-detail-card .post-header {
+  margin-bottom: 16px;
+}
+
+.post-detail-card .post-detail-content {
+  font-size: 23px;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  color: #0f1419;
+  margin-left: 0;
+}
+
+.post-detail-card .post-detail-time {
+  color: #536471;
+  font-size: 15px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eef3f4;
+  margin-left: 0;
+}
+
+.post-detail-card .post-detail-actions {
+  padding: 12px 0;
+  border-bottom: 1px solid #eef3f4;
+  margin-left: 0;
+}
+
+.post-detail-card .post-detail-actions .like-button {
+  padding: 12px 16px;
+  margin-right: 0;
 }
 
 .post-actions-container {
   position: relative;
+  display: inline-block;
 }
 
 .post-menu-button {
   background: none;
   border: none;
-  color: #657786;
-  padding: 5px;
+  color: #536471;
+  padding: 8px;
   border-radius: 50%;
   cursor: pointer;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .post-menu-button:hover {
@@ -177,39 +250,96 @@
   right: 0;
   bottom: 0;
   z-index: 100;
+  background: transparent;
 }
 
 .post-dropdown-menu {
   position: absolute;
   right: 0;
-  top: 30px;
+  top: 100%;
+  margin-top: 4px;
   background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
   z-index: 101;
-  width: 150px;
+  min-width: 200px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .dropdown-item {
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  color: #000;
+  color: #0f1419;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: 400;
+  transition: background-color 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
 }
 
 .dropdown-item svg {
   margin-right: 12px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .dropdown-item:hover {
-  background-color: #f5f8fa;
+  background-color: #f7f9fa;
+}
+
+.dropdown-item.edit {
+  color: #1d9bf0;
+}
+
+.dropdown-item.edit:hover {
+  background-color: rgba(29, 155, 240, 0.1);
 }
 
 .dropdown-item.delete {
-  color: #e0245e;
+  color: #f4212e;
 }
 
 .dropdown-item.delete:hover {
-  background-color: rgba(224, 36, 94, 0.1);
+  background-color: rgba(244, 33, 46, 0.1);
+}
+
+/* 削除中のローディングオーバーレイ */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* レスポンシブデザイン対応 */
+@media (max-width: 768px) {
+  .post-dropdown-menu {
+    right: -8px;
+    min-width: 180px;
+  }
+  
+  .dropdown-item {
+    padding: 14px 16px;
+    font-size: 16px;
+  }
+  
+  .dropdown-item svg {
+    width: 20px;
+    height: 20px;
+  }
 }

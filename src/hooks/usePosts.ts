@@ -5,7 +5,17 @@ export const usePosts = (initialPosts: Post[] = []) => {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
 
   const updatePost = (updatedPost: Post) => {
-    setPosts(posts.map(p => p.id === updatedPost.id ? updatedPost : p));
+    setPosts(posts.map(post => {
+      if (post.id === updatedPost.id) {
+        // 元の投稿のユーザー情報を保持
+        return {
+          ...updatedPost,
+          user: post.user,
+          user_id: post.user_id
+        };
+      }
+      return post;
+    }));
   };
 
   const deletePost = (postId: number) => {
