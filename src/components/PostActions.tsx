@@ -54,7 +54,13 @@ const PostActions = ({ post, onEditSuccess, onDeleteSuccess, isDetail = false } 
   const handleEditSuccess = (updatedPost: Post) => {
     setIsEditModalOpen(false);
     if (onEditSuccess) {
-      onEditSuccess(updatedPost);
+      // 元の投稿のユーザー情報を保持して更新されたPostに追加
+      const postWithUser = {
+        ...updatedPost,
+        user: post.user,
+        user_id: post.user_id
+      };
+      onEditSuccess(postWithUser);
     }
   };
 

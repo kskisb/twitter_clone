@@ -32,7 +32,13 @@ const EditPostModal = ({ post, onClose, onEditSuccess }: EditPostModalProps) => 
 
     try {
       const updatedPost = await updatePost(post.id, content);
-      onEditSuccess(updatedPost);
+      // 元の投稿のユーザー情報を保持
+      const postWithUser = {
+        ...updatedPost,
+        user: post.user,
+        user_id: post.user_id
+      };
+      onEditSuccess(postWithUser);
     } catch (err: any) {
       console.error('更新エラー:', err);
       setError('投稿の更新に失敗しました。もう一度お試しください。');

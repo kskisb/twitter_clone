@@ -69,8 +69,28 @@ const HomePage = () => {
   };
 
   const handlePostUpdated = (updatedPost: Post) => {
-    setPosts(posts.map(post => post.id === updatedPost.id ? updatedPost : post));
-    setFollowingPosts(followingPosts.map(post => post.id === updatedPost.id ? updatedPost : post));
+    setPosts(posts.map(post => {
+      if (post.id === updatedPost.id) {
+        // 元の投稿のユーザー情報を保持
+        return {
+          ...updatedPost,
+          user: post.user,
+          user_id: post.user_id
+        };
+      }
+      return post;
+    }));
+    setFollowingPosts(followingPosts.map(post => {
+      if (post.id === updatedPost.id) {
+        // 元の投稿のユーザー情報を保持
+        return {
+          ...updatedPost,
+          user: post.user,
+          user_id: post.user_id
+        };
+      }
+      return post;
+    }));
   };
 
   const handlePostDeleted = (postId: number) => {
