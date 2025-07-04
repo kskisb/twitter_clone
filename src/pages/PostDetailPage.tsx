@@ -137,20 +137,20 @@ const PostDetailPage = () => {
           {post.content}
         </div>
 
-        <div className="post-actions-bar">
+        <div className="post-detail-time">
+          {formatDistance(new Date(post.created_at), new Date(), {
+            addSuffix: true,
+            locale: ja
+          })}
+        </div>
+
+        <div className="post-detail-actions">
           <LikeButton
             likesCount={post.likes_count || 0}
             isLiked={post.liked_by_current_user || false}
             onLike={handleLike}
             onUnlike={handleUnlike}
           />
-        </div>
-
-        <div className="post-detail-time">
-          {formatDistance(new Date(post.created_at), new Date(), {
-            addSuffix: true,
-            locale: ja
-          })}
         </div>
       </div>
     </div>
