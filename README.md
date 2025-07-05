@@ -26,3 +26,6 @@ npm run dev
 
 ## デプロイ
 AWS Amplify を使用して簡単にデプロイできます。
+
+## デモ動画
+https://github.com/user-attachments/assets/63060cb7-8924-4698-bb87-0d4ee0b3e67f
