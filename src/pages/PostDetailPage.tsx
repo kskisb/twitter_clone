@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { formatDistance } from 'date-fns';
+import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
 import { getPost } from '../api/posts';
@@ -144,10 +144,7 @@ const PostDetailPage = () => {
         </div>
 
         <div className="post-detail-time">
-          {formatDistance(new Date(post.created_at), new Date(), {
-            addSuffix: true,
-            locale: ja
-          })}
+          {format(new Date(post.created_at), 'yyyy年M月d日 HH:mm', { locale: ja })}
         </div>
 
         <div className="post-detail-actions">
