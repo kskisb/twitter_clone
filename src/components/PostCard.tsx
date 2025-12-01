@@ -5,6 +5,7 @@ import { ja } from 'date-fns/locale';
 import { AuthContext } from '../context/AuthContext';
 import PostActions from './PostActions';
 import LikeButton from './LikeButton';
+import RepostButton from './RepostButton';
 import { likePost, unlikePost } from '../api/likes';
 import type { Post } from '../types/post';
 
@@ -13,10 +14,23 @@ interface PostCardProps {
   onPostUpdated?: (post: Post) => void;
   onPostDeleted?: (postId: number) => void;
   onLikeToggled?: (postId: number, liked: boolean) => void;
+  onRepostToggled?: (postId: number, reposted: boolean) => void;
   isDetail?: boolean;
+  repostedBy?: {
+    id: number;
+    name: string;
+  };
 }
 
-const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail = false }: PostCardProps) => {
+const PostCard = ({
+  post,
+  onPostUpdated,
+  onPostDeleted,
+  onLikeToggled,
+  onRepostToggled,
+  isDetail = false,
+  repostedBy
+}: PostCardProps) => {
   const { user } = useContext(AuthContext);
   const isOwner = user?.id === (post.user?.id || post.user_id);
   const navigate = useNavigate();
@@ -67,8 +81,23 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail 
     }
   };
 
+  const handleRepostChange = (reposted: boolean, count: number) => {
+    if (onRepostToggled) {
+      onRepostToggled(post.id, reposted);
+    }
+  };
+
   const cardContent = (
     <>
+      {repostedBy && (
+        <div className="repost-indicator">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="#00ba7c">
+            <path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"/>
+          </svg>
+          <span className="repost-text">{repostedBy.name}がリポストしました</span>
+        </div>
+      )}
+      
       <div className="post-header" onClick={handleHeaderClick}>
         <div className="post-user-info" onClick={handleUserClick}>
           <div className="avatar">
@@ -104,6 +133,12 @@ const PostCard = ({ post, onPostUpdated, onPostDeleted, onLikeToggled, isDetail 
           isLiked={post.liked_by_current_user || false}
           onLike={handleLike}
           onUnlike={handleUnlike}
+        />
+        <RepostButton
+          postId={post.id}
+          initialReposted={post.reposted_by_current_user || false}
+          initialCount={post.reposts_count || 0}
+          onRepostChange={handleRepostChange}
         />
       </div>
     </>

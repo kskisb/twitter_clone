@@ -119,3 +119,54 @@ a:hover {
     margin-left: 0;
   }
 }
+
+.repost-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  margin-left: 40px;
+  color: #536471;
+  font-size: 13px;
+}
+
+.repost-indicator svg {
+  flex-shrink: 0;
+}
+
+.repost-text {
+  font-weight: 600;
+  color: #00ba7c;
+}
+
+.repost-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  color: #536471;
+  font-size: 13px;
+  margin-right: 20px;
+}
+
+.repost-button:hover {
+  background-color: rgba(0, 186, 124, 0.1);
+  color: #00ba7c;
+}
+
+.repost-button.reposted {
+  color: #00ba7c;
+}
+
+.repost-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.repost-button .count {
+  font-size: 13px;
+  font-weight: 400;
+}

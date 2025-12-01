@@ -11,4 +11,16 @@ export interface Post {
   };
   likes_count: number;
   liked_by_current_user: boolean;
+  reposts_count: number;
+  reposted_by_current_user: boolean;
+}
+
+export interface PostItem {
+  type: 'post' | 'repost';
+  data: Post;
+  reposted_by?: {
+    id: number;
+    name: string;
+  };
+  timestamp: string;
 }

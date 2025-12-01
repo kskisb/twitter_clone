@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { getAllPosts, getFollowingPosts } from '../api/posts';
-import type { Post } from '../types/post';
+import type { Post, PostItem } from '../types/post';
 import CreatePostForm from '../components/CreatePostForm';
 import CreatePostButton from '../components/CreatePostButton';
 import PostCard from '../components/PostCard';
@@ -12,8 +12,8 @@ import '../styles/HomePage.css';
 type TabType = 'all' | 'following';
 
 const HomePage = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [followingPosts, setFollowingPosts] = useState<Post[]>([]);
+  const [postItems, setPostItems] = useState<PostItem[]>([]);
+  const [followingPostItems, setFollowingPostItems] = useState<PostItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFollowing, setIsLoadingFollowing] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('all');
@@ -25,8 +25,8 @@ const HomePage = () => {
     try {
       setIsLoading(true);
       setError('');
-      const fetchedPosts = await getAllPosts();
-      setPosts(fetchedPosts);
+      const fetchedPostItems = await getAllPosts();
+      setPostItems(fetchedPostItems);
     } catch (err) {
       console.error('投稿の取得に失敗しました:', err);
       setError('投稿の取得中にエラーが発生しました。');
@@ -39,8 +39,8 @@ const HomePage = () => {
     try {
       setIsLoadingFollowing(true);
       setError('');
-      const fetchedPosts = await getFollowingPosts();
-      setFollowingPosts(fetchedPosts);
+      const fetchedPostItems = await getFollowingPosts();
+      setFollowingPostItems(fetchedPostItems);
     } catch (err) {
       console.error('フォロー中の投稿の取得に失敗しました:', err);
       setError('フォロー中の投稿の取得中にエラーが発生しました。');
@@ -69,57 +69,71 @@ const HomePage = () => {
   };
 
   const handlePostUpdated = (updatedPost: Post) => {
-    setPosts(posts.map(post => {
-      if (post.id === updatedPost.id) {
-        // 元の投稿のユーザー情報を保持
+    const updateItems = (items: PostItem[]) => items.map(item => {
+      if (item.data.id === updatedPost.id) {
         return {
-          ...updatedPost,
-          user: post.user,
-          user_id: post.user_id
+          ...item,
+          data: {
+            ...updatedPost,
+            user: item.data.user,
+            user_id: item.data.user_id
+          }
         };
       }
-      return post;
-    }));
-    setFollowingPosts(followingPosts.map(post => {
-      if (post.id === updatedPost.id) {
-        // 元の投稿のユーザー情報を保持
-        return {
-          ...updatedPost,
-          user: post.user,
-          user_id: post.user_id
-        };
-      }
-      return post;
-    }));
+      return item;
+    });
+
+    setPostItems(updateItems(postItems));
+    setFollowingPostItems(updateItems(followingPostItems));
   };
 
   const handlePostDeleted = (postId: number) => {
-    setPosts(posts.filter(post => post.id !== postId));
-    setFollowingPosts(followingPosts.filter(post => post.id !== postId));
+    setPostItems(postItems.filter(item => item.data.id !== postId));
+    setFollowingPostItems(followingPostItems.filter(item => item.data.id !== postId));
   };
 
   const handleLikeToggled = (postId: number, liked: boolean) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
+    const updateItems = (items: PostItem[]) => items.map(item => {
+      if (item.data.id === postId) {
         return {
-          ...post,
-          likes_count: liked ? (post.likes_count || 0) + 1 : Math.max(0, (post.likes_count || 0) - 1),
-          liked_by_current_user: liked
+          ...item,
+          data: {
+            ...item.data,
+            likes_count: liked ? (item.data.likes_count || 0) + 1 : Math.max(0, (item.data.likes_count || 0) - 1),
+            liked_by_current_user: liked
+          }
         };
       }
-      return post;
-    }));
+      return item;
+    });
 
-    setFollowingPosts(followingPosts.map(post => {
-      if (post.id === postId) {
+    setPostItems(updateItems(postItems));
+    setFollowingPostItems(updateItems(followingPostItems));
+  };
+
+  const handleRepostToggled = (postId: number, reposted: boolean) => {
+    const updateItems = (items: PostItem[]) => items.map(item => {
+      if (item.data.id === postId) {
         return {
-          ...post,
-          likes_count: liked ? (post.likes_count || 0) + 1 : Math.max(0, (post.likes_count || 0) - 1),
-          liked_by_current_user: liked
+          ...item,
+          data: {
+            ...item.data,
+            reposts_count: reposted ? (item.data.reposts_count || 0) + 1 : Math.max(0, (item.data.reposts_count || 0) - 1),
+            reposted_by_current_user: reposted
+          }
         };
       }
-      return post;
-    }));
+      return item;
+    });
+
+    setPostItems(updateItems(postItems));
+    setFollowingPostItems(updateItems(followingPostItems));
+    
+    // リポストした場合はリフレッシュ
+    if (reposted) {
+      fetchAllPosts();
+      fetchFollowingPosts();
+    }
   };
 
   if (!isAuthenticated) {
@@ -131,7 +145,7 @@ const HomePage = () => {
     );
   }
 
-  const displayedPosts = activeTab === 'all' ? posts : followingPosts;
+  const displayedItems = activeTab === 'all' ? postItems : followingPostItems;
   const currentLoading = activeTab === 'all' ? isLoading : isLoadingFollowing;
 
   return (
@@ -165,32 +179,32 @@ const HomePage = () => {
       <div className="posts-container">
         {error && <p className="error-message">{error}</p>}
         
-        {/* ポスト作成中のローディング表示 */}
         {isCreatingPost && (
           <div className="creating-post-indicator">
             <LoadingSpinner size="small" text="投稿を作成中..." />
           </div>
         )}
         
-        {/* 投稿読み込み中のUI改善 */}
         {currentLoading ? (
           <PostSkeleton count={5} />
         ) : (
           <>
-            {displayedPosts.length === 0 ? (
+            {displayedItems.length === 0 ? (
               <div className="no-posts">
                 {activeTab === 'all' 
                   ? '投稿がありません。最初の投稿をしてみましょう！' 
                   : 'フォロー中のユーザーの投稿がありません。ユーザーをフォローしてみましょう！'}
               </div>
             ) : (
-              displayedPosts.map(post => (
+              displayedItems.map((item, index) => (
                 <PostCard
-                  key={post.id}
-                  post={post}
+                  key={`${item.type}-${item.data.id}-${index}`}
+                  post={item.data}
                   onPostUpdated={handlePostUpdated}
                   onPostDeleted={handlePostDeleted}
                   onLikeToggled={handleLikeToggled}
+                  onRepostToggled={handleRepostToggled}
+                  repostedBy={item.type === 'repost' ? item.reposted_by : undefined}
                 />
               ))
             )}

@@ -1,8 +1,8 @@
 import { client } from './client';
-import type { Post } from '../types/post';
+import type { Post, PostItem } from '../types/post';
 
-export const getAllPosts = async (): Promise<Post[]> => {
-  const response = await client.get<Post[]>('/posts');
+export const getAllPosts = async (): Promise<PostItem[]> => {
+  const response = await client.get<PostItem[]>('/posts');
   return response.data;
 }
 
@@ -11,8 +11,8 @@ export const getUserPosts = async (userId: number): Promise<Post[]> => {
   return response.data;
 }
 
-export const getFollowingPosts = async (): Promise<Post[]> => {
-  const response = await client.get<Post[]>('/posts/following');
+export const getFollowingPosts = async (): Promise<PostItem[]> => {
+  const response = await client.get<PostItem[]>('/posts/following');
   return response.data;
 }
 
