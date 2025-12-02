@@ -128,17 +128,17 @@ const PostCard = ({
       </div>
 
       <div className="post-actions-bar">
-        <LikeButton
-          likesCount={post.likes_count || 0}
-          isLiked={post.liked_by_current_user || false}
-          onLike={handleLike}
-          onUnlike={handleUnlike}
-        />
         <RepostButton
           postId={post.id}
           initialReposted={post.reposted_by_current_user || false}
           initialCount={post.reposts_count || 0}
           onRepostChange={handleRepostChange}
+        />
+        <LikeButton
+          likesCount={post.likes_count || 0}
+          isLiked={post.liked_by_current_user || false}
+          onLike={handleLike}
+          onUnlike={handleUnlike}
         />
       </div>
     </>
