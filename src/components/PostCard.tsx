@@ -97,7 +97,7 @@ const PostCard = ({
           <span className="repost-text">{repostedBy.name}がリポストしました</span>
         </div>
       )}
-      
+
       <div className="post-header" onClick={handleHeaderClick}>
         <div className="post-user-info" onClick={handleUserClick}>
           <div className="avatar">
