@@ -81,7 +81,7 @@ const PostCard = ({
     }
   };
 
-  const handleRepostChange = (reposted: boolean, count: number) => {
+  const handleRepostChange = (reposted: boolean, _count: number) => {
     if (onRepostToggled) {
       onRepostToggled(post.id, reposted);
     }
