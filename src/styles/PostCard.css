@@ -201,21 +201,41 @@
 .post-detail-card .post-detail-time {
   color: #536471;
   font-size: 15px;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #eef3f4;
+  margin-bottom: 12px;
   margin-left: 0;
 }
 
 .post-detail-card .post-detail-actions {
+  display: flex;
+  align-items: center;
   padding: 12px 0;
+  border-top: 1px solid #eef3f4;
   border-bottom: 1px solid #eef3f4;
+  margin-top: 0;
   margin-left: 0;
+  gap: 8px;
+}
+
+.post-detail-card .post-detail-actions .repost-button {
+  padding: 16px 24px;
+  margin-right: 40px;
+  font-size: 15px;
+}
+
+.post-detail-card .post-detail-actions .repost-button svg {
+  width: 22px;
+  height: 22px;
 }
 
 .post-detail-card .post-detail-actions .like-button {
-  padding: 12px 16px;
+  padding: 16px 24px;
   margin-right: 0;
+  font-size: 15px;
+}
+
+.post-detail-card .post-detail-actions .like-button svg {
+  width: 22px;
+  height: 22px;
 }
 
 .post-actions-container {

@@ -1,0 +1,72 @@
+.network-graph-page {
+  width: 100%;
+  height: calc(100vh - 50px);
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+.network-graph-page.loading,
+.network-graph-page.error {
+  justify-content: center;
+  align-items: center;
+}
+
+.network-graph-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #eef3f4;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+}
+
+.network-graph-header .back-button {
+  background: none;
+  border: none;
+  color: #0f1419;
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 24px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  transition: background-color 0.2s ease;
+}
+
+.network-graph-header .back-button:hover {
+  background-color: rgba(15, 20, 25, 0.1);
+}
+
+.network-graph-info {
+  padding: 12px 16px;
+  background-color: #f7f9fa;
+  border-bottom: 1px solid #eef3f4;
+  text-align: center;
+}
+
+.network-graph-info p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #536471;
+}
+
+.network-graph-svg {
+  flex: 1;
+  width: 100%;
+  background-color: #f7f9fa;
+}
+
+.node circle:hover {
+  stroke: #1da1f2;
+  stroke-width: 3;
+}
+
+.link {
+  marker-end: url(#arrow);
+}

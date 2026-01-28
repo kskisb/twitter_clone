@@ -7,6 +7,7 @@ import { getPost } from '../api/posts';
 import { likePost, unlikePost } from '../api/likes';
 import PostActions from '../components/PostActions';
 import LikeButton from '../components/LikeButton';
+import RepostButton from '../components/RepostButton';
 import type { Post } from '../types/post';
 
 const PostDetailPage = () => {
@@ -57,6 +58,16 @@ const PostDetailPage = () => {
       ...post,
       likes_count: liked ? post.likes_count + 1 : Math.max(post.likes_count - 1, 0),
       liked_by_current_user: liked
+    });
+  };
+
+  const handleRepostToggled = (reposted: boolean, count: number) => {
+    if (!post) return;
+
+    setPost({
+      ...post,
+      reposts_count: count,
+      reposted_by_current_user: reposted
     });
   };
 
@@ -148,6 +159,12 @@ const PostDetailPage = () => {
         </div>
 
         <div className="post-detail-actions">
+          <RepostButton
+            postId={post.id}
+            initialReposted={post.reposted_by_current_user || false}
+            initialCount={post.reposts_count || 0}
+            onRepostChange={handleRepostToggled}
+          />
           <LikeButton
             likesCount={post.likes_count || 0}
             isLiked={post.liked_by_current_user || false}

@@ -29,3 +29,12 @@ export const getFollowers = async (userId: number): Promise<User[]> => {
   const response = await client.get(`/users/${userId}/followers`);
   return response.data;
 };
+
+// フォロー関係のグラフデータを取得
+export const getRelationshipGraph = async (): Promise<{
+  nodes: Array<{ id: number; name: string; group: string }>;
+  links: Array<{ source: number; target: number }>;
+}> => {
+  const response = await client.get('/relationships/graph');
+  return response.data;
+};

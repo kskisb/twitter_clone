@@ -12,6 +12,7 @@ import UserFollowingPage from './pages/UserFollowingPage';
 import UserFollowersPage from './pages/UserFollowersPage';
 import ConversationsPage from './pages/ConversationsPage';
 import ConversationDetailPage from './pages/ConversationDetailPage';
+import NetworkGraphPage from './pages/NetworkGraphPage';
 
 // スタイル
 import './App.css';
@@ -27,6 +28,7 @@ import './styles/Auth.css';
 import './styles/Modal.css';
 import './styles/LoadingSpinner.css';
 import './styles/PostSkeleton.css';
+import './styles/NetworkGraph.css';
 
 function App() {
   return (
@@ -103,6 +105,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ConversationDetailPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/network"
+                element={
+                  <ProtectedRoute>
+                    <NetworkGraphPage />
                   </ProtectedRoute>
                 }
               />
